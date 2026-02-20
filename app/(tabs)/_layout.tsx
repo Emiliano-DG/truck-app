@@ -1,35 +1,71 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { colors } from '@/constants/colors'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { Tabs } from 'expo-router'
+import React from 'react'
 
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+export default function RootLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-      }}>
+        headerTitleAlign: 'center',
+        headerTitleStyle: { fontSize: 24, color: colors.titleHeader },
+        headerStyle: {
+          backgroundColor: '#ffffff',
+          borderBottomLeftRadius: 16,
+          borderBottomRightRadius: 16,
+        },
+        headerShadowVisible: false,
+        tabBarStyle: {
+          backgroundColor: '#f5f5f5',
+          borderTopWidth: 0,
+          elevation: 0,
+          shadowOpacity: 0,
+          height: 70,
+          paddingBottom: 10,
+        },
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: '#8e8e93',
+      }}
+    >
       <Tabs.Screen
-        name="index"
+        name="trucks"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: 'Camiones',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name="truck-outline"
+              size={size}
+              color={color}
+            />
+          ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="business"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Emprendimiento',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name="briefcase-outline"
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="reports"
+        options={{
+          title: 'Reportes',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name="chart-bar"
+              size={size}
+              color={color}
+            />
+          ),
         }}
       />
     </Tabs>
-  );
+  )
 }
