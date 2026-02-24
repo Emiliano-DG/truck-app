@@ -1,14 +1,10 @@
+import { Ionicons } from '@expo/vector-icons'
 import { Link } from 'expo-router'
 import React from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { Truck } from '../types/truck'
-import { calculateDriverBalance } from '../utils/finance'
 
 export default function TruckCard({ item }: { item: Truck }) {
-  const { remaining, status } = calculateDriverBalance(
-    item.agreedSalary,
-    item.payments,
-  )
   return (
     <Link href={{ pathname: '/truck/[id]', params: { id: item.id } }} asChild>
       <Pressable style={styles.card}>
@@ -18,28 +14,13 @@ export default function TruckCard({ item }: { item: Truck }) {
         </View>
         {/* Indicador visual de que se puede entrar a ver mas */}
         {/* <Text style={styles.arrowText}>{'>'}</Text> */}
-
-        <View>
-          <Text
-            style={{
-              ...styles.balanceText,
-              color: status === 'pagado' ? '#34c759' : '#ff3b30',
-            }}
-          >
-            ${remaining.toLocaleString()}
-          </Text>
-          <Text style={styles.balanceLabel}>{status}</Text>
-        </View>
+        <Ionicons name="chevron-forward" size={20} color="#999" />
       </Pressable>
     </Link>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f2f2f7',
-  },
   listPadding: {
     paddingHorizontal: 20,
     paddingBottom: 20,

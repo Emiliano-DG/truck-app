@@ -9,7 +9,6 @@ export interface Truck {
   id: string
   model: string //nombre del camión
   driverName: string //nombre del conductor
-  agreedSalary: number //salario acordado
   payments: Payment[] //historial de pagos
 }
 

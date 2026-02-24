@@ -1,12 +1,11 @@
 export const colors = {
-  primary: '#E53935',
-  // primaryLight: '#E53935',
-  // background: '#F8F9FA',
-  // card: '#FFFFFF',
-  text: '#111111',
+  primary: '#2F49B6', // azul principal
+  accent: '#FF6B4A', // naranja botones
+  background: '#F4F6FA',
+  card: '#FFFFFF',
+  textPrimary: '#1F2937',
   textSecondary: '#6B7280',
-  titleHeader: '#111',
-  // border: '#E5E7EB',
-  background: '#f2f2f7',
-  headerColor: '#ffffff',
+  tabBackground: '#FFFFFF',
+  tabInactive: '#9CA3AF', // gris íconos inactivos
+  tabActiveCircle: '#2F49B6', // gris suave del fondo circular
 }

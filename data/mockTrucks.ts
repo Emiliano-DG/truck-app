@@ -16,7 +16,7 @@ export const MOCK_TRUCKS: Truck[] = [
       {
         id: 't2',
         description: 'segundo adelanto',
-        amount: 1200,
+        amount: 1500,
         date: '2026-02-18',
       },
     ],

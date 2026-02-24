@@ -1,22 +1,16 @@
+import AddTruckModal from '@/components/AddTruckModal'
 import TruckCard from '@/components/TruckCard'
 import { colors } from '@/constants/colors'
+import { useTruckStore } from '@/store/useTruckStore'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { useState } from 'react'
-import {
-  FlatList,
-  Modal,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native'
+import { FlatList, Pressable, StyleSheet } from 'react-native'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
-import { MOCK_TRUCKS } from '../../data/mockTrucks'
-import { Truck } from '../../types/truck'
 
 export default function CamionesScreen() {
   //1. Cargamos los datos de los camiones (mockTrucks), luego vendra el backend
-  const [trucks] = useState<Truck[]>(MOCK_TRUCKS)
+  // const [trucks] = useState<Truck[]>(MOCK_TRUCKS)
+  const trucks = useTruckStore((state) => state.trucks)
   const [modalVisible, setModalVisible] = useState(false)
 
   return (
@@ -36,28 +30,10 @@ export default function CamionesScreen() {
           <MaterialCommunityIcons name="plus" size={28} color="#fff" />
         </Pressable>
         {/* Modal de Agregar */}
-        <Modal
-          animationType="slide"
-          transparent={true}
+        <AddTruckModal
           visible={modalVisible}
-          onRequestClose={() => setModalVisible(false)}
-        >
-          <View
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-          >
-            <View style={{ backgroundColor: 'white', padding: 20 }}>
-              <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
-                Hola soy el modal 🚛
-              </Text>
-
-              <Pressable onPress={() => setModalVisible(false)}>
-                <Text style={{ color: colors.primary, fontWeight: 'bold' }}>
-                  Cerrar
-                </Text>
-              </Pressable>
-            </View>
-          </View>
-        </Modal>
+          onClose={() => setModalVisible(false)}
+        />
       </SafeAreaView>
     </SafeAreaProvider>
   )
@@ -75,12 +51,12 @@ const styles = StyleSheet.create({
   },
   fabButton: {
     position: 'absolute',
-    bottom: 24,
+    bottom: 50,
     right: 24,
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.accent,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
@@ -88,5 +64,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 6,
     elevation: 6,
+    zIndex: 1000,
   },
 })
