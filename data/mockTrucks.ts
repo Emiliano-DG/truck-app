@@ -5,19 +5,27 @@ export const MOCK_TRUCKS: Truck[] = [
     id: '1',
     model: 'Scania R450',
     driverName: 'Juan Pérez',
-    agreedSalary: 2000,
-    payments: [
+    movements: [
       {
         id: 't1',
-        description: 'primer adelanto',
+        type: 'comision',
         amount: 500,
         date: '2026-02-10',
+        description: 'Viaje a Buenos Aires',
       },
       {
         id: 't2',
-        description: 'segundo adelanto',
+        type: 'comision',
         amount: 1500,
         date: '2026-02-18',
+        description: 'Viaje a Rosario',
+      },
+      {
+        id: 't3',
+        type: 'ingreso',
+        amount: 2000,
+        date: '2026-02-20',
+        description: 'Viaje a Córdoba',
       },
     ],
   },
@@ -25,13 +33,13 @@ export const MOCK_TRUCKS: Truck[] = [
     id: '2',
     model: 'Volvo FH16',
     driverName: 'María López',
-    agreedSalary: 2500,
-    payments: [
+    movements: [
       {
         id: 't3',
-        description: 'primer adelanto',
-        amount: 1000,
+        type: 'comision',
+        amount: 500,
         date: '2026-02-15',
+        description: 'Viaje a Córdoba',
       },
     ],
   },

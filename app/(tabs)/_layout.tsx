@@ -20,10 +20,7 @@ export default function RootLayout() {
           },
           tabBarShowLabel: false,
           tabBarStyle: styles.tabBar,
-          tabBarItemStyle: {
-            justifyContent: 'center', // Centra el contenido del item
-            alignItems: 'center',
-          },
+
           tabBarActiveTintColor: colors.tabActiveCircle,
           tabBarInactiveTintColor: colors.tabInactive,
         }}
@@ -74,7 +71,7 @@ export default function RootLayout() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    height: 70,
+    height: 80,
     backgroundColor: '#fff',
     alignItems: 'center',
     elevation: 4,

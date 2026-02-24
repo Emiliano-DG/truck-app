@@ -5,7 +5,7 @@ import { useTruckStore } from '@/store/useTruckStore'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { useState } from 'react'
 import { FlatList, Pressable, StyleSheet } from 'react-native'
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function CamionesScreen() {
   //1. Cargamos los datos de los camiones (mockTrucks), luego vendra el backend
@@ -14,28 +14,23 @@ export default function CamionesScreen() {
   const [modalVisible, setModalVisible] = useState(false)
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={styles.container}>
-        <FlatList
-          data={trucks}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <TruckCard item={item} />}
-          contentContainerStyle={styles.listPadding}
-        />
-        {/* Boton flotante para agregar nuevo camión */}
-        <Pressable
-          style={styles.fabButton}
-          onPress={() => setModalVisible(true)}
-        >
-          <MaterialCommunityIcons name="plus" size={28} color="#fff" />
-        </Pressable>
-        {/* Modal de Agregar */}
-        <AddTruckModal
-          visible={modalVisible}
-          onClose={() => setModalVisible(false)}
-        />
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={trucks}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <TruckCard item={item} />}
+        contentContainerStyle={styles.listPadding}
+      />
+      {/* Boton flotante para agregar nuevo camión */}
+      <Pressable style={styles.fabButton} onPress={() => setModalVisible(true)}>
+        <MaterialCommunityIcons name="plus" size={28} color="#fff" />
+      </Pressable>
+      {/* Modal de Agregar */}
+      <AddTruckModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+      />
+    </SafeAreaView>
   )
 }
 

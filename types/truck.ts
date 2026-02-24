@@ -1,5 +1,6 @@
-export interface Payment {
+export interface Movement {
   id: string
+  type: 'ingreso' | 'comision'
   amount: number
   date: string
   description: string
@@ -9,7 +10,7 @@ export interface Truck {
   id: string
   model: string //nombre del camión
   driverName: string //nombre del conductor
-  payments: Payment[] //historial de pagos
+  movements: Movement[]
 }
 
 export interface GeneralExpense {
