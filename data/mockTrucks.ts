@@ -37,9 +37,16 @@ export const MOCK_TRUCKS: Truck[] = [
       {
         id: 't3',
         type: 'comision',
-        amount: 500,
+        amount: 2000,
         date: '2026-02-15',
         description: 'Viaje a Córdoba',
+      },
+      {
+        id: 't4',
+        type: 'comision',
+        amount: 1000,
+        date: '2026-02-20',
+        description: 'Viaje a Mendoza',
       },
     ],
   },

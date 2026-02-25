@@ -42,7 +42,7 @@ export default function AddTruckModal({
       id: Math.random().toString(36).substring(7), //id temporal
       model: form.model,
       driverName: form.driverName,
-      payments: [],
+      movements: [],
     })
 
     //Limpiamos el formulario
@@ -54,7 +54,7 @@ export default function AddTruckModal({
   return (
     <Modal
       visible={visible}
-      animationType="slide"
+      animationType="fade"
       transparent={true}
       onRequestClose={onClose}
     >

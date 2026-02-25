@@ -5,6 +5,7 @@ import { Movement, Truck } from '../types/truck'
 interface TruckState {
   trucks: Truck[]
   addTruck: (newTruck: Truck) => void
+  addMovement: (truckId: string, movement: Movement) => void
   // removeTruck: (id: string) => void
   // updateTruck: (id: string, truck: Truck) => void
 }
