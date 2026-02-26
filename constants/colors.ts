@@ -4,7 +4,7 @@ export const colors = {
   background: '#F4F6FA',
   card: '#FFFFFF',
   textPrimary: '#1F2937',
-  textSecondary: '#6B7280',
+  textSecondary: '#8E8E93',
   tabBackground: '#FFFFFF',
   tabInactive: '#9CA3AF', // gris íconos inactivos
   tabActiveCircle: '#2F49B6', // gris suave del fondo circular

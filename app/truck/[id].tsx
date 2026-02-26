@@ -1,4 +1,5 @@
 import { AddMovementModal } from '@/components/addMovementModal'
+import { MovementCard } from '@/components/MovementCard'
 import { colors } from '@/constants/colors'
 import { useTruckStore } from '@/store/useTruckStore'
 import { calculateBalance } from '@/utils/finance'
@@ -42,7 +43,7 @@ export default function DetailsTrucks() {
               { color: balance >= 0 ? '#34C759' : '#FF3B30' },
             ]}
           >
-            {balance}
+            ${balance.toLocaleString('es-AR')}
           </Text>
         </View>
       </View>
@@ -55,23 +56,10 @@ export default function DetailsTrucks() {
       <FlatList
         data={truck.movements}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.moveItem}>
-            <View>
-              <Text style={styles.moveDesc}>{item.description}</Text>
-              <Text style={styles.moveDate}>{item.date}</Text>
-            </View>
-
-            <Text
-              style={[
-                styles.moveAmount,
-                { color: item.type === 'ingreso' ? '#34C759' : '#FF3B30' },
-              ]}
-            >
-              {item.type === 'ingreso' ? '+' : '-'} ${item.amount}
-            </Text>
-          </View>
-        )}
+        renderItem={({ item }) => <MovementCard movement={item} />}
+        ListEmptyComponent={
+          <Text style={styles.emptyText}>No hay movimientos registrados</Text>
+        }
       />
 
       {/* Boton para agregar */}
@@ -111,7 +99,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   label: { fontSize: 12, color: '#8E8E93', textTransform: 'uppercase' },
-  mainBalance: { fontSize: 32, fontWeight: 'bold' },
+  mainBalance: { fontSize: 28, fontWeight: 'bold' },
   listContainer: {
     paddingHorizontal: 20,
     marginTop: 20,
@@ -125,18 +113,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: colors.primary,
   },
-  moveItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  moveDesc: { fontSize: 16, fontWeight: '500' },
-  moveDate: { fontSize: 16, fontWeight: '500' },
-  moveAmount: { fontSize: 16, fontWeight: 'bold' },
   addButton: {
     backgroundColor: colors.accent,
     margin: 35,
@@ -149,4 +125,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
+  emptyText: { textAlign: 'center', marginTop: 50, color: '#8E8E93' },
 })

@@ -1,4 +1,5 @@
 import { movementSchema } from '@/schemas/movementSchema'
+import { Movement } from '@/types/truck'
 import { useState } from 'react'
 import {
   Modal,
@@ -26,7 +27,7 @@ export function AddMovementModal({
   const [form, setForm] = useState({
     description: '',
     amount: '',
-    type: 'ingreso' as 'ingreso' | 'comision',
+    type: 'adelanto' as 'adelanto' | 'comision',
     date: new Date().toISOString().split('T')[0],
   })
 
@@ -39,6 +40,22 @@ export function AddMovementModal({
       setErrors(result.error.issues[0].message)
       return
     }
+
+    const newMovement: Movement = {
+      id: Date.now().toString(),
+      ...result.data,
+    }
+
+    addMovement(truckId, newMovement)
+
+    setForm({
+      description: '',
+      amount: '',
+      type: 'adelanto',
+      date: new Date().toISOString().split('T')[0],
+    })
+
+    setErrors('')
 
     onClose()
   }
@@ -58,17 +75,17 @@ export function AddMovementModal({
             <Pressable
               style={[
                 styles.typeBtn,
-                form.type === 'ingreso' && styles.typeBtnActiveIngreso,
+                form.type === 'adelanto' && styles.typeBtnActiveIngreso,
               ]}
-              onPress={() => setForm({ ...form, type: 'ingreso' })}
+              onPress={() => setForm({ ...form, type: 'adelanto' })}
             >
               <Text
                 style={[
                   styles.typeBtnText,
-                  form.type === 'ingreso' && styles.textWhite,
+                  form.type === 'adelanto' && styles.textWhite,
                 ]}
               >
-                Ingreso
+                Adelanto
               </Text>
             </Pressable>
 
@@ -97,7 +114,7 @@ export function AddMovementModal({
             style={styles.input}
             keyboardType="numeric"
             value={form.amount}
-            onChangeText={(v) => setForm({ ...form, amount: v })}
+            onChangeText={(amount) => setForm({ ...form, amount })}
           />
 
           {/* Input de fecha */}
@@ -105,7 +122,7 @@ export function AddMovementModal({
             placeholder="Fecha"
             style={styles.input}
             value={form.date}
-            onChangeText={(v) => setForm({ ...form, date: v })}
+            onChangeText={(date) => setForm({ ...form, date })}
           />
 
           {/* Input de descripcion */}

@@ -1,6 +1,6 @@
 export interface Movement {
   id: string
-  type: 'ingreso' | 'comision'
+  type: 'adelanto' | 'comision'
   amount: number
   date: string
   description: string
@@ -13,10 +13,12 @@ export interface Truck {
   movements: Movement[]
 }
 
+export type ExpenseCategory = 'Combustible' | 'Seguro' | 'Taller' | 'Otros'
+
 export interface GeneralExpense {
   id: string
   date: string
-  category: 'combustible' | 'Seguro' | 'Taller' | 'Otros' //categoría del gasto
+  category: ExpenseCategory //categoría del gasto
   description: string
   amount: number
 }

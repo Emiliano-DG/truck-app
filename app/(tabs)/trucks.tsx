@@ -1,10 +1,10 @@
 import AddTruckModal from '@/components/AddTruckModal'
+import { FabButton } from '@/components/FabButton'
 import TruckCard from '@/components/TruckCard'
 import { colors } from '@/constants/colors'
 import { useTruckStore } from '@/store/useTruckStore'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { useState } from 'react'
-import { FlatList, Pressable, StyleSheet } from 'react-native'
+import { FlatList, StyleSheet, Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function CamionesScreen() {
@@ -20,11 +20,12 @@ export default function CamionesScreen() {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <TruckCard item={item} />}
         contentContainerStyle={styles.listPadding}
+        ListEmptyComponent={
+          <Text style={styles.emptyText}>No hay camiones registrados</Text>
+        }
       />
       {/* Boton flotante para agregar nuevo camión */}
-      <Pressable style={styles.fabButton} onPress={() => setModalVisible(true)}>
-        <MaterialCommunityIcons name="plus" size={28} color="#fff" />
-      </Pressable>
+      <FabButton onPress={() => setModalVisible(true)} />
       {/* Modal de Agregar */}
       <AddTruckModal
         visible={modalVisible}
@@ -61,4 +62,5 @@ const styles = StyleSheet.create({
     elevation: 6,
     zIndex: 1000,
   },
+  emptyText: { textAlign: 'center', marginTop: 50, color: '#8E8E93' },
 })
