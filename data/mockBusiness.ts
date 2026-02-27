@@ -1,10 +1,10 @@
-import { GeneralExpense } from '@/types/truck'
+import { BusinessMovement } from '@/types/truck'
 
-export const MOCK_EXPENSES: GeneralExpense[] = [
+export const MOCK_BUSINESS_MOVEMENTS: BusinessMovement[] = [
   {
     id: '1',
     date: '2022-01-01',
-    category: 'combustible',
+    category: 'Combustible',
     description: 'Diésel',
     amount: 100,
   },

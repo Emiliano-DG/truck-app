@@ -1,4 +1,4 @@
-import { AddMovementModal } from '@/components/addMovementModal'
+import { AddMovementModal } from '@/components/AddMovementModal'
 import { MovementCard } from '@/components/MovementCard'
 import { colors } from '@/constants/colors'
 import { useTruckStore } from '@/store/useTruckStore'
@@ -56,7 +56,15 @@ export default function DetailsTrucks() {
       <FlatList
         data={truck.movements}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <MovementCard movement={item} />}
+        renderItem={({ item }) => (
+          <MovementCard
+            description={item.description}
+            date={item.date}
+            amount={item.amount}
+            type={item.type}
+          />
+        )}
+        contentContainerStyle={styles.list}
         ListEmptyComponent={
           <Text style={styles.emptyText}>No hay movimientos registrados</Text>
         }
@@ -84,6 +92,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.card,
     padding: 25,
     margin: 15,
+    borderWidth: 1,
+    borderColor: colors.border,
     borderRadius: 20,
     elevation: 4,
     shadowColor: '#000',
@@ -114,7 +124,7 @@ const styles = StyleSheet.create({
     color: colors.primary,
   },
   addButton: {
-    backgroundColor: colors.accent,
+    backgroundColor: colors.primary,
     margin: 35,
     padding: 12,
     borderRadius: 15,
@@ -125,5 +135,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
-  emptyText: { textAlign: 'center', marginTop: 50, color: '#8E8E93' },
+  emptyText: { textAlign: 'center', marginTop: 50, color: colors.textLight },
+  list: { paddingHorizontal: 20, paddingBottom: 100 },
 })

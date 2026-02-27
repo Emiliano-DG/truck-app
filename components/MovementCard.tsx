@@ -1,21 +1,34 @@
-import { Movement } from '@/types/truck'
+import { colors } from '@/constants/colors'
 import { StyleSheet, Text, View } from 'react-native'
 
-export function MovementCard({ movement }: { movement: Movement }) {
+interface MovementCardProps {
+  description: string
+  date: string
+  amount: number
+  type: 'gasto' | 'ingreso' | 'adelanto' | 'comision'
+  category?: string
+}
+
+export function MovementCard({
+  description,
+  date,
+  amount,
+  type,
+  category,
+}: MovementCardProps) {
+  const isPositive = type === 'ingreso' || type === 'adelanto'
   return (
     <View style={styles.moveItem}>
       <View>
-        <Text style={styles.moveDesc}>{movement.description}</Text>
-        <Text style={styles.moveDate}>{movement.date}</Text>
+        {category && <Text style={styles.categoryBadge}>{category}</Text>}
+        <Text style={styles.description}>{description}</Text>
+        <Text style={styles.date}>{date}</Text>
       </View>
 
       <Text
-        style={[
-          styles.moveAmount,
-          { color: movement.type === 'adelanto' ? '#34C759' : '#FF3B30' },
-        ]}
+        style={[styles.amount, { color: isPositive ? '#34C759' : '#FF3B30' }]}
       >
-        {movement.type === 'adelanto' ? '+' : '-'} ${movement.amount}
+        ${amount.toLocaleString('es-AR')}
       </Text>
     </View>
   )
@@ -23,15 +36,22 @@ export function MovementCard({ movement }: { movement: Movement }) {
 
 const styles = StyleSheet.create({
   moveItem: {
+    backgroundColor: colors.card,
+    padding: 15,
+    borderRadius: 12,
+    marginBottom: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
   },
-  moveDesc: { fontSize: 16, fontWeight: '500' },
-  moveDate: { fontSize: 16, fontWeight: '500' },
-  moveAmount: { fontSize: 16, fontWeight: 'bold' },
+  categoryBadge: {
+    fontSize: 10,
+    color: colors.primary,
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    marginBottom: 4,
+  },
+  description: { fontSize: 16, fontWeight: '500' },
+  date: { fontSize: 12, color: colors.textLight },
+  amount: { fontSize: 18, fontWeight: 'bold', color: colors.expense },
 })

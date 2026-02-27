@@ -13,12 +13,13 @@ export interface Truck {
   movements: Movement[]
 }
 
-export type ExpenseCategory = 'Combustible' | 'Seguro' | 'Taller' | 'Otros'
+export type BusinessCategory = 'Combustible' | 'Seguro' | 'Taller' | 'Otros'
 
-export interface GeneralExpense {
+export interface BusinessMovement {
   id: string
   date: string
-  category: ExpenseCategory //categoría del gasto
+  type: 'ingreso' | 'gasto'
+  category: BusinessCategory //categoría del gasto
   description: string
   amount: number
 }

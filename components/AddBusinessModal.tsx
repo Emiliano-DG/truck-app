@@ -1,4 +1,8 @@
-import { expenseSchema } from '@/schemas/expenseSchema'
+import { colors } from '@/constants/colors'
+import { CATEGORIES } from '@/features/BusinessMovement/businessMovementCategory'
+import { businessMovementSchema } from '@/features/BusinessMovement/businessMovementSchema'
+import { useBusinessMovementStore } from '@/store/useBusinessMovementStore'
+
 import { useState } from 'react'
 import {
   Modal,
@@ -9,55 +13,53 @@ import {
   TextInput,
   View,
 } from 'react-native'
-import { ExpenseCategory } from '../types/truck'
+import { BusinessCategory, BusinessMovement } from '../types/truck'
 
-interface AddExpenseModalProps {
+interface AddBusinessModalProps {
   visible: boolean
   onClose: () => void
 }
 
-const CATEGORIES: ExpenseCategory[] = [
-  'Combustible',
-  'Seguro',
-  'Taller',
-  'Otros',
-]
+export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
+  const { addBusinessMovement } = useBusinessMovementStore((state) => state)
 
-export function AddExpenseModal({ visible, onClose }: AddExpenseModalProps) {
   const [form, setForm] = useState({
     description: '',
     amount: '',
+    category: 'Otros' as BusinessCategory,
+    type: 'gasto' as 'gasto' | 'ingreso',
     date: new Date().toISOString().split('T')[0],
-    category: 'Otros' as ExpenseCategory,
   })
 
   const [errors, setErrors] = useState('')
 
+  // Función para guardar el gasto/ingreso
   const handleSave = () => {
-    const result = expenseSchema.safeParse(form)
+    const result = businessMovementSchema.safeParse(form)
 
     if (!result.success) {
       setErrors(result.error.issues[0].message)
       return
     }
 
-    // const newExpense: GeneralExpense = {
-    //   id: Date.now().toString(),
-    //   ...result.data,
+    const newMovement: BusinessMovement = {
+      id: Date.now().toString(),
+      ...result.data,
+    }
 
-    // }
+    addBusinessMovement(newMovement)
 
-    // AddExpenseModal(newExpense)
+    setForm({
+      description: '',
+      amount: '',
+      category: 'Otros' as BusinessCategory,
+      type: 'gasto' as 'gasto' | 'ingreso',
+      date: new Date().toISOString().split('T')[0],
+    })
 
-    // setForm({
-    //   description: '',
-    //   amount: '',
-    //   date: new Date().toISOString().split('T')[0],
-    // })
+    setErrors('')
 
-    // setErrors('')
-
-    // onClose()
+    onClose()
   }
 
   return (
@@ -91,6 +93,45 @@ export function AddExpenseModal({ visible, onClose }: AddExpenseModalProps) {
               </Pressable>
             ))}
           </ScrollView>
+
+          <View style={styles.typeSelector}>
+            {/* Boton ingreso */}
+            <Pressable
+              style={[
+                styles.typeBtn,
+                form.type === 'ingreso' && styles.typeBtnActiveIngreso,
+              ]}
+              onPress={() => setForm({ ...form, type: 'ingreso' })}
+            >
+              <Text
+                style={[
+                  styles.typeBtnText,
+                  form.type === 'ingreso' && styles.textWhite,
+                ]}
+              >
+                Ingreso
+              </Text>
+            </Pressable>
+
+            {/* Boton comision */}
+            <Pressable
+              style={[
+                styles.typeBtn,
+                form.type === 'gasto' && styles.typeBtnActiveGasto,
+              ]}
+              onPress={() => setForm({ ...form, type: 'gasto' })}
+            >
+              <Text
+                style={[
+                  styles.typeBtnText,
+                  form.type === 'gasto' && styles.textWhite,
+                ]}
+              >
+                Gasto
+              </Text>
+            </Pressable>
+          </View>
+
           <TextInput
             placeholder="Descripción"
             style={styles.input}
@@ -150,6 +191,17 @@ const styles = StyleSheet.create({
     height: 40,
   },
   catText: { fontSize: 14, color: '#1C1C1E' },
+  typeSelector: {
+    flexDirection: 'row',
+    marginBottom: 20,
+    backgroundColor: '#F2F2F7',
+    borderRadius: 10,
+    padding: 4,
+  },
+  typeBtn: { flex: 1, padding: 12, alignItems: 'center', borderRadius: 8 },
+  typeBtnActiveIngreso: { backgroundColor: colors.income },
+  typeBtnActiveGasto: { backgroundColor: colors.expense },
+  typeBtnText: { fontWeight: '600', color: '#8E8E93' },
   input: {
     backgroundColor: '#F2F2F7',
     padding: 15,

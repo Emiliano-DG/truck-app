@@ -1,16 +1,16 @@
 import { colors } from '@/constants/colors'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'
 import { Pressable, StyleSheet } from 'react-native'
 
 interface FabButtonProps {
   onPress: () => void
-  icon?: keyof typeof MaterialCommunityIcons.glyphMap
+  icon?: keyof typeof Ionicons.glyphMap
 }
 
-export const FabButton = ({ onPress, icon = 'plus' }: FabButtonProps) => {
+export const FabButton = ({ onPress, icon = 'add' }: FabButtonProps) => {
   return (
     <Pressable style={styles.fabButton} onPress={onPress}>
-      <MaterialCommunityIcons name={icon} size={30} color="white" />
+      <Ionicons name={icon} size={30} color="white" />
     </Pressable>
   )
 }
@@ -23,10 +23,10 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: colors.accent,
+    backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: colors.shadow,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 6,

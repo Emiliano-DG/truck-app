@@ -1,20 +1,17 @@
-import { AddExpenseModal } from '@/components/AddExpenseModal'
+import { AddBusinessModal } from '@/components/AddBusinessModal'
 import { FabButton } from '@/components/FabButton'
 import { colors } from '@/constants/colors'
-import { useGeneralExpenseStore } from '@/store/useGeneralExpenseStore'
+import { useBusinessMovementStore } from '@/store/useBusinessMovementStore'
+import { calculateBusinessBalance } from '@/utils/finance'
 import React, { useState } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function emprendimiento() {
-  const { expenses } = useGeneralExpenseStore()
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const { movements } = useBusinessMovementStore((state) => state)
 
-  //Calculamos el total de gastos para mostrar un mini resumen arriba
-  const totalExpenses = expenses.reduce(
-    (acc, expense) => acc + expense.amount,
-    0,
-  )
+  const { businessBalance } = calculateBusinessBalance(movements)
 
   return (
     <SafeAreaView style={styles.container}>
@@ -24,13 +21,13 @@ export default function emprendimiento() {
           <Text style={styles.totalLabel}>Total:</Text>
           <Text style={styles.totalAmount}>
             {' '}
-            ${totalExpenses.toLocaleString('es-AR')}
+            ${businessBalance.toLocaleString('es-AR')}
           </Text>
         </View>
       </View>
 
       <FlatList
-        data={expenses}
+        data={movements}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.expenseItem}>
@@ -39,8 +36,16 @@ export default function emprendimiento() {
               <Text style={styles.description}>{item.description}</Text>
               <Text style={styles.date}>{item.date}</Text>
             </View>
-            <Text style={styles.amount}>
-              -${item.amount.toLocaleString('es-AR')}
+            <Text
+              style={[
+                styles.amount,
+                {
+                  color: item.type === 'gasto' ? colors.expense : colors.income,
+                },
+              ]}
+            >
+              {item.type === 'gasto' ? '-' : '+'} $
+              {item.amount.toLocaleString('es-AR')}
             </Text>
           </View>
         )}
@@ -51,7 +56,7 @@ export default function emprendimiento() {
       />
 
       <FabButton onPress={() => setIsModalVisible(true)} />
-      <AddExpenseModal
+      <AddBusinessModal
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
       />
@@ -60,16 +65,16 @@ export default function emprendimiento() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F2F2F7' },
+  container: { flex: 1, backgroundColor: colors.background },
   headerContainer: { padding: 10 },
   title: { fontSize: 28, fontWeight: 'bold', marginBottom: 15 },
-  totalCard: { backgroundColor: '#1C1C1E', padding: 20, borderRadius: 15 },
+  totalCard: { backgroundColor: colors.primary, padding: 20, borderRadius: 15 },
   totalLabel: {
-    color: colors.textSecondary,
+    color: colors.textLight,
     fontSize: 12,
     textTransform: 'uppercase',
   },
-  totalAmount: { color: 'white', fontSize: 32, fontWeight: 'bold' },
+  totalAmount: { color: colors.white, fontSize: 32, fontWeight: 'bold' },
   list: { paddingHorizontal: 20, paddingBottom: 100 },
   expenseItem: {
     backgroundColor: colors.card,
@@ -88,13 +93,13 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   description: { fontSize: 16, fontWeight: '500' },
-  date: { fontSize: 12, color: colors.textSecondary },
-  amount: { fontSize: 18, fontWeight: 'bold', color: '#FF3B30' },
+  date: { fontSize: 12, color: colors.textLight },
+  amount: { fontSize: 18, fontWeight: 'bold', color: colors.expense },
   fab: {
     position: 'absolute',
     right: 20,
     bottom: 20,
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.primary,
     width: 60,
     height: 60,
     borderRadius: 30,
@@ -102,5 +107,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 5,
   },
-  emptyText: { textAlign: 'center', marginTop: 50, color: '#8E8E93' },
+  emptyText: { textAlign: 'center', marginTop: 50, color: colors.textLight },
 })

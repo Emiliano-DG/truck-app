@@ -1,12 +1,17 @@
+import { colors } from '@/constants/colors'
 import { movementSchema } from '@/schemas/movementSchema'
 import { Movement } from '@/types/truck'
 import { useState } from 'react'
 import {
+  Keyboard,
+  KeyboardAvoidingView,
   Modal,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
   TextInput,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native'
 import { useTruckStore } from '../store/useTruckStore'
@@ -62,86 +67,92 @@ export function AddMovementModal({
 
   return (
     <Modal visible={visible} animationType="fade" transparent>
-      <View style={styles.overlay}>
-        <View style={styles.modalContainer}>
-          <Text style={styles.title}>Agregar movimiento</Text>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.overlay}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+            style={styles.modalContainer}
+          >
+            <Text style={styles.title}>Agregar movimiento</Text>
 
-          {/* Control de error de campos */}
-          {errors && <Text style={styles.error}>{errors}</Text>}
+            {/* Control de error de campos */}
+            {errors && <Text style={styles.error}>{errors}</Text>}
 
-          {/* Selector de tipo de movimiento (ingreso/comision) */}
-          <View style={styles.typeSelector}>
-            {/* Boton ingreso */}
-            <Pressable
-              style={[
-                styles.typeBtn,
-                form.type === 'adelanto' && styles.typeBtnActiveIngreso,
-              ]}
-              onPress={() => setForm({ ...form, type: 'adelanto' })}
-            >
-              <Text
+            {/* Selector de tipo de movimiento (ingreso/comision) */}
+            <View style={styles.typeSelector}>
+              {/* Boton ingreso */}
+              <Pressable
                 style={[
-                  styles.typeBtnText,
-                  form.type === 'adelanto' && styles.textWhite,
+                  styles.typeBtn,
+                  form.type === 'adelanto' && styles.typeBtnActiveIngreso,
                 ]}
+                onPress={() => setForm({ ...form, type: 'adelanto' })}
               >
-                Adelanto
-              </Text>
-            </Pressable>
+                <Text
+                  style={[
+                    styles.typeBtnText,
+                    form.type === 'adelanto' && styles.textWhite,
+                  ]}
+                >
+                  Adelanto
+                </Text>
+              </Pressable>
 
-            {/* Boton comision */}
-            <Pressable
-              style={[
-                styles.typeBtn,
-                form.type === 'comision' && styles.typeBtnActiveComision,
-              ]}
-              onPress={() => setForm({ ...form, type: 'comision' })}
-            >
-              <Text
+              {/* Boton comision */}
+              <Pressable
                 style={[
-                  styles.typeBtnText,
-                  form.type === 'comision' && styles.textWhite,
+                  styles.typeBtn,
+                  form.type === 'comision' && styles.typeBtnActiveComision,
                 ]}
+                onPress={() => setForm({ ...form, type: 'comision' })}
               >
-                Comision
-              </Text>
-            </Pressable>
-          </View>
+                <Text
+                  style={[
+                    styles.typeBtnText,
+                    form.type === 'comision' && styles.textWhite,
+                  ]}
+                >
+                  Comision
+                </Text>
+              </Pressable>
+            </View>
 
-          {/* Input de monto */}
-          <TextInput
-            placeholder="Monto $"
-            style={styles.input}
-            keyboardType="numeric"
-            value={form.amount}
-            onChangeText={(amount) => setForm({ ...form, amount })}
-          />
+            {/* Input de monto */}
+            <TextInput
+              placeholder="Monto $"
+              style={styles.input}
+              keyboardType="numeric"
+              value={form.amount}
+              onChangeText={(amount) => setForm({ ...form, amount })}
+            />
 
-          {/* Input de fecha */}
-          <TextInput
-            placeholder="Fecha"
-            style={styles.input}
-            value={form.date}
-            onChangeText={(date) => setForm({ ...form, date })}
-          />
+            {/* Input de fecha */}
+            <TextInput
+              placeholder="Fecha"
+              style={styles.input}
+              value={form.date}
+              onChangeText={(date) => setForm({ ...form, date })}
+            />
 
-          {/* Input de descripcion */}
-          <TextInput
-            placeholder="Descripcion"
-            style={styles.input}
-            value={form.description}
-            onChangeText={(text) => setForm({ ...form, description: text })}
-          />
-          <View style={styles.buttons}>
-            <Pressable style={styles.btnCancel} onPress={onClose}>
-              <Text style={styles.btnCancelText}>Cancelar</Text>
-            </Pressable>
-            <Pressable style={styles.btnSave} onPress={handleSave}>
-              <Text style={styles.btnSaveText}>Agregar</Text>
-            </Pressable>
-          </View>
+            {/* Input de descripcion */}
+            <TextInput
+              placeholder="Descripcion"
+              style={styles.input}
+              value={form.description}
+              onChangeText={(text) => setForm({ ...form, description: text })}
+            />
+            <View style={styles.buttons}>
+              <Pressable style={styles.btnCancel} onPress={onClose}>
+                <Text style={styles.btnCancelText}>Cancelar</Text>
+              </Pressable>
+              <Pressable style={styles.btnSave} onPress={handleSave}>
+                <Text style={styles.btnSaveText}>Agregar</Text>
+              </Pressable>
+            </View>
+          </KeyboardAvoidingView>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </Modal>
   )
 }
@@ -165,6 +176,7 @@ const styles = StyleSheet.create({
     zIndex: 1000,
   },
   title: {
+    color: colors.text,
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
@@ -185,11 +197,11 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   typeBtn: { flex: 1, padding: 12, alignItems: 'center', borderRadius: 8 },
-  typeBtnActiveIngreso: { backgroundColor: '#34C759' },
+  typeBtnActiveIngreso: { backgroundColor: colors.income },
   typeBtnText: { fontWeight: '600', color: '#8E8E93' },
   textWhite: { color: 'white' },
   typeBtnActiveComision: {
-    backgroundColor: '#FF3B30',
+    backgroundColor: colors.expense,
   },
   input: {
     backgroundColor: '#F2F2F7',
@@ -203,16 +215,23 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   btnSave: {
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.primary,
     padding: 15,
     borderRadius: 10,
     flex: 1,
     marginLeft: 10,
     alignItems: 'center',
   },
-  btnCancel: { padding: 15, borderRadius: 10, flex: 1, alignItems: 'center' },
+  btnCancel: {
+    padding: 15,
+    borderRadius: 10,
+    flex: 1,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: colors.border,
+  },
   btnCancelText: {
-    color: '#8E8E93',
+    color: colors.textLight,
     fontWeight: '600',
   },
   btnSaveText: {
