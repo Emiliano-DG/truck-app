@@ -40,7 +40,7 @@ export default function DetailsTrucks() {
           <Text
             style={[
               styles.mainBalance,
-              { color: balance >= 0 ? '#34C759' : '#FF3B30' },
+              { color: balance > 0 ? colors.expense : colors.income },
             ]}
           >
             ${balance.toLocaleString('es-AR')}

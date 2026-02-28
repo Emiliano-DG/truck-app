@@ -16,7 +16,7 @@ export default function emprendimiento() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
-        <Text style={styles.title}>Gastos Generales</Text>
+        <Text style={styles.title}>Gastos Generales 💸</Text>
         <View style={styles.totalCard}>
           <Text style={styles.totalLabel}>Total:</Text>
           <Text style={styles.totalAmount}>
@@ -67,7 +67,7 @@ export default function emprendimiento() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
   headerContainer: { padding: 10 },
-  title: { fontSize: 28, fontWeight: 'bold', marginBottom: 15 },
+  title: { fontSize: 28, fontWeight: 'bold', marginBottom: 20 },
   totalCard: { backgroundColor: colors.primary, padding: 20, borderRadius: 15 },
   totalLabel: {
     color: colors.textLight,

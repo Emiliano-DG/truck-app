@@ -11,20 +11,12 @@ export default function RootLayout() {
       <StatusBar style="dark" />
       <Tabs
         screenOptions={{
+          headerShown: false,
           headerShadowVisible: false,
-          headerStyle: {
-            backgroundColor: colors.background,
-          },
-          headerTitleStyle: {
-            color: colors.text,
-          },
           tabBarShowLabel: false,
           tabBarStyle: styles.tabBar,
           tabBarItemStyle: {
             paddingVertical: 8,
-          },
-          tabBarLabelStyle: {
-            color: colors.text,
           },
         }}
       >
@@ -74,7 +66,7 @@ export default function RootLayout() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    backgroundColor: colors.background,
+    backgroundColor: colors.card,
     height: 70,
     paddingBottom: 10,
     borderTopWidth: 0,

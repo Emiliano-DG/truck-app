@@ -2,7 +2,7 @@ import { BusinessMovement, Movement } from '@/types/truck'
 
 // Calculo del balance para las comisiones de los camiones
 export const calculateBalance = (movements: Movement[]) => {
-  const ingresos = movements
+  const adelanto = movements
     .filter((m) => m.type === 'adelanto')
     .reduce((acc, m) => acc + m.amount, 0)
 
@@ -10,8 +10,8 @@ export const calculateBalance = (movements: Movement[]) => {
     .filter((m) => m.type === 'comision')
     .reduce((acc, m) => acc + m.amount, 0)
 
-  const balance = ingresos - comisiones
-  return { balance, ingresos, comisiones }
+  const balance = comisiones - adelanto
+  return { balance, adelanto, comisiones }
 }
 
 // Calculo del balance para los gastos e ingresos generales

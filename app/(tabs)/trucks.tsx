@@ -15,6 +15,7 @@ export default function CamionesScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Text style={styles.title}>Camiones 🚚</Text>
       <FlatList
         data={trucks}
         keyExtractor={(item) => item.id}
@@ -40,6 +41,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
   },
+  title: { fontSize: 28, fontWeight: 'bold', marginBottom: 20 },
   listPadding: {
     paddingTop: 20,
     paddingHorizontal: 20,
