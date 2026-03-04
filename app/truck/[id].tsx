@@ -1,5 +1,5 @@
 import { AddMovementModal } from '@/components/AddMovementModal'
-import { MovementCard } from '@/components/MovementCard'
+import MovementCard from '@/components/MovementCard'
 import { colors } from '@/constants/colors'
 import { useTruckStore } from '@/store/useTruckStore'
 import { calculateBalance } from '@/utils/finance'
@@ -40,7 +40,10 @@ export default function DetailsTrucks() {
           <Text
             style={[
               styles.mainBalance,
-              { color: balance > 0 ? colors.expense : colors.income },
+              {
+                color:
+                  balance > 0 ? colors.status.danger : colors.status.success,
+              },
             ]}
           >
             ${balance.toLocaleString('es-AR')}
@@ -86,14 +89,13 @@ export default function DetailsTrucks() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: colors.background.main,
   },
   balanceCard: {
-    backgroundColor: colors.card,
+    backgroundColor: colors.background.surface,
     padding: 25,
     margin: 15,
-    borderWidth: 1,
-    borderColor: colors.border,
+
     borderRadius: 20,
     elevation: 4,
     shadowColor: '#000',
@@ -101,8 +103,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 6,
   },
-  truckTitle: { fontSize: 22, fontWeight: 'bold' },
-  driverSub: { color: '#8E8E93', marginBottom: 15 },
+  truckTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: colors.text.secondary,
+  },
+  driverSub: { color: colors.text.secondary, marginBottom: 15 },
   row: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -39,9 +39,15 @@ export default function CamionesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: colors.background.main,
   },
-  title: { fontSize: 28, fontWeight: 'bold', marginBottom: 20 },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: colors.text.primary,
+    paddingHorizontal: 20,
+  },
   listPadding: {
     paddingTop: 20,
     paddingHorizontal: 20,
@@ -54,7 +60,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.background.surface,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',

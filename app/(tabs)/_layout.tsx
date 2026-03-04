@@ -8,7 +8,7 @@ import { StyleSheet } from 'react-native'
 export default function RootLayout() {
   return (
     <>
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
       <Tabs
         screenOptions={{
           headerShown: false,
@@ -28,7 +28,7 @@ export default function RootLayout() {
               <Ionicons
                 name={focused ? 'car' : 'car-outline'}
                 size={size}
-                color={colors.text}
+                color={colors.accent.light}
               />
             ),
           }}
@@ -41,7 +41,7 @@ export default function RootLayout() {
               <Ionicons
                 name={focused ? 'briefcase' : 'briefcase-outline'}
                 size={size}
-                color={colors.text}
+                color={colors.accent.light}
               />
             ),
           }}
@@ -54,7 +54,7 @@ export default function RootLayout() {
               <Ionicons
                 name={focused ? 'stats-chart' : 'stats-chart-outline'}
                 size={size}
-                color={colors.text}
+                color={colors.accent.light}
               />
             ),
           }}
@@ -66,12 +66,12 @@ export default function RootLayout() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    backgroundColor: colors.card,
+    backgroundColor: colors.background.card,
     height: 70,
     paddingBottom: 10,
     borderTopWidth: 0,
     elevation: 15, // Android
-    shadowColor: colors.shadow, // iOS
+    shadowColor: '#000', // iOS
     shadowOffset: { width: 0, height: -3 },
     shadowOpacity: 0.08,
     shadowRadius: 8,

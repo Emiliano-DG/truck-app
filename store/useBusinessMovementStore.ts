@@ -5,6 +5,7 @@ import { create } from 'zustand'
 interface BusinessMovementState {
   movements: BusinessMovement[]
   addBusinessMovement: (movement: BusinessMovement) => void
+  deleteBusinessMovement: (id: string) => void
 }
 
 export const useBusinessMovementStore = create<BusinessMovementState>(
@@ -13,6 +14,10 @@ export const useBusinessMovementStore = create<BusinessMovementState>(
     addBusinessMovement: (newMovement: BusinessMovement) =>
       set((state) => ({
         movements: [newMovement, ...state.movements],
+      })),
+    deleteBusinessMovement: (id: string) =>
+      set((state) => ({
+        movements: state.movements.filter((m) => m.id !== id),
       })),
   }),
 )

@@ -1,3 +1,4 @@
+import { colors } from '@/constants/colors'
 import { Ionicons } from '@expo/vector-icons'
 import { Link } from 'expo-router'
 import React from 'react'
@@ -14,7 +15,11 @@ export default function TruckCard({ item }: { item: Truck }) {
         </View>
         {/* Indicador visual de que se puede entrar a ver mas */}
         {/* <Text style={styles.arrowText}>{'>'}</Text> */}
-        <Ionicons name="chevron-forward" size={20} color="#999" />
+        <Ionicons
+          name="chevron-forward"
+          size={20}
+          color={colors.accent.light}
+        />
       </Pressable>
     </Link>
   )
@@ -26,9 +31,11 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   card: {
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.background.card,
     padding: 20,
     borderRadius: 15,
+    borderColor: colors.background.surface,
+    borderWidth: 1,
     marginBottom: 12,
     flexDirection: 'row', // pone los textos y la flecha en linea
     justifyContent: 'space-between', // separa los textos de la flecha
@@ -43,15 +50,16 @@ const styles = StyleSheet.create({
   modelText: {
     fontSize: 18,
     fontWeight: '600',
+    color: colors.text.primary,
   },
   driverNameText: {
     fontSize: 14,
-    color: '#8e8e93',
+    color: colors.text.secondary,
     marginTop: 4,
   },
   arrowText: {
     fontSize: 18,
-    color: '#c7c7cc',
+    color: colors.text.secondary,
   },
   balanceText: {},
   balanceLabel: {},
