@@ -13,20 +13,31 @@ import {
   TextInput,
   View,
 } from 'react-native'
-import { BusinessCategory, BusinessMovement } from '../types/truck'
+import ModalActions from './ModalActions'
 
 interface AddBusinessModalProps {
   visible: boolean
   onClose: () => void
 }
 
+type FormType = {
+  description: string
+  amount: string
+  type: 'gasto' | 'ingreso'
+  category:
+    | (typeof CATEGORIES)['gasto'][number]
+    | (typeof CATEGORIES)['ingreso'][number]
+  date: string
+}
+
 export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
   const { addBusinessMovement } = useBusinessMovementStore((state) => state)
 
-  const [form, setForm] = useState({
+  // Estado para el formulario
+  const [form, setForm] = useState<FormType>({
     description: '',
     amount: '',
-    category: 'Otros' as BusinessCategory,
+    category: CATEGORIES.gasto[0],
     type: 'gasto' as 'gasto' | 'ingreso',
     date: new Date().toISOString().split('T')[0],
   })
@@ -42,7 +53,7 @@ export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
       return
     }
 
-    const newMovement: BusinessMovement = {
+    const newMovement = {
       id: Date.now().toString(),
       ...result.data,
     }
@@ -52,7 +63,7 @@ export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
     setForm({
       description: '',
       amount: '',
-      category: 'Otros' as BusinessCategory,
+      category: CATEGORIES.gasto[0],
       type: 'gasto' as 'gasto' | 'ingreso',
       date: new Date().toISOString().split('T')[0],
     })
@@ -62,37 +73,21 @@ export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
     onClose()
   }
 
+  const handleChangeType = (newType: 'gasto' | 'ingreso') => {
+    setForm((prev) => ({
+      ...prev,
+      type: newType,
+      category: CATEGORIES[newType][0],
+    }))
+  }
+
+  const categories = CATEGORIES[form.type]
+
   return (
     <Modal visible={visible} animationType="fade" transparent>
       <View style={styles.overlay}>
         <View style={styles.modalContainer}>
           <Text style={styles.title}> Nuevo Gasto/Ingreso General 💸</Text>
-          <Text style={styles.label}>Categoría</Text>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.catScroll}
-          >
-            {CATEGORIES.map((cat) => (
-              <Pressable
-                key={cat}
-                style={[
-                  styles.catBtn,
-                  form.category === cat && styles.catBtnActive,
-                ]}
-                onPress={() => setForm({ ...form, category: cat })}
-              >
-                <Text
-                  style={[
-                    styles.catText,
-                    form.category === cat && styles.textWhite,
-                  ]}
-                >
-                  {cat}
-                </Text>
-              </Pressable>
-            ))}
-          </ScrollView>
 
           <View style={styles.typeSelector}>
             {/* Boton ingreso */}
@@ -101,7 +96,7 @@ export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
                 styles.typeBtn,
                 form.type === 'ingreso' && styles.typeBtnActiveIngreso,
               ]}
-              onPress={() => setForm({ ...form, type: 'ingreso' })}
+              onPress={() => handleChangeType('ingreso')}
             >
               <Text
                 style={[
@@ -119,7 +114,7 @@ export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
                 styles.typeBtn,
                 form.type === 'gasto' && styles.typeBtnActiveGasto,
               ]}
-              onPress={() => setForm({ ...form, type: 'gasto' })}
+              onPress={() => handleChangeType('gasto')}
             >
               <Text
                 style={[
@@ -132,27 +127,58 @@ export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
             </Pressable>
           </View>
 
+          <Text style={styles.label}>Categoría</Text>
+
+          {/* Mostramos las categorias segun el tipo seleccionado */}
+
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.catScroll}
+          >
+            {categories.map((cat) => (
+              <Pressable
+                key={cat}
+                style={[
+                  styles.catBtn,
+                  form.category === cat && styles.catBtnActive,
+                ]}
+                onPress={() => setForm({ ...form, category: cat })}
+              >
+                <Text
+                  style={[
+                    styles.catText,
+                    form.category === cat && styles.textCard,
+                  ]}
+                >
+                  {cat}
+                </Text>
+              </Pressable>
+            ))}
+          </ScrollView>
+
           <TextInput
             placeholder="Descripción"
+            placeholderTextColor={colors.text.secondary}
             style={styles.input}
             value={form.description}
             onChangeText={(v) => setForm({ ...form, description: v })}
           />
           <TextInput
             placeholder="Monto $"
+            placeholderTextColor={colors.text.secondary}
             style={styles.input}
             keyboardType="numeric"
             value={form.amount}
             onChangeText={(v) => setForm({ ...form, amount: v })}
           />
-          <View style={styles.buttons}>
-            <Pressable style={styles.btnCancel} onPress={onClose}>
-              <Text>Cancelar</Text>
-            </Pressable>
-            <Pressable style={styles.btnSave} onPress={handleSave}>
-              <Text style={styles.textWhite}>Guardar</Text>
-            </Pressable>
-          </View>
+          <TextInput
+            style={styles.input}
+            value={form.date}
+            onChangeText={(v) => setForm({ ...form, date: v })}
+          />
+
+          <ModalActions onClose={onClose} handleSave={handleSave} />
         </View>
       </View>
     </Modal>
@@ -177,20 +203,31 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     zIndex: 1000,
   },
-  title: { fontSize: 20, fontWeight: 'bold', marginBottom: 20 },
-  label: { fontSize: 14, color: '#8E8E93', marginBottom: 10 },
+  title: {
+    fontSize: 22,
+    fontWeight: '700',
+    marginBottom: 25,
+    color: colors.text.primary,
+  },
+  label: {
+    fontSize: 15,
+    color: colors.text.primary,
+    marginBottom: 15,
+    fontWeight: '600',
+  },
   catScroll: { flexDirection: 'row', marginBottom: 20 },
-  catBtnActive: { backgroundColor: '#007AFF' },
+  catBtnActive: { backgroundColor: colors.primary.soft },
+  textCard: { color: colors.background.card, fontWeight: 'bold' },
   textWhite: { color: colors.text.primary, fontWeight: 'bold' },
   catBtn: {
     paddingHorizontal: 15,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: colors.background.card,
     marginRight: 8,
     height: 40,
   },
-  catText: { fontSize: 14, color: '#1C1C1E' },
+  catText: { fontSize: 14, color: colors.text.secondary },
   typeSelector: {
     flexDirection: 'row',
     marginBottom: 20,
@@ -204,6 +241,7 @@ const styles = StyleSheet.create({
   typeBtnText: { fontWeight: '600', color: colors.text.secondary },
   input: {
     backgroundColor: colors.background.card,
+    color: colors.text.secondary,
     padding: 15,
     borderRadius: 10,
     borderColor: colors.background.surface,
@@ -212,18 +250,25 @@ const styles = StyleSheet.create({
   },
   buttons: { flexDirection: 'row', justifyContent: 'space-between' },
   btnSave: {
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.background.main,
+    color: colors.text.primary,
     padding: 15,
     borderRadius: 10,
     flex: 1,
     marginLeft: 10,
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.4,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 6,
+    elevation: 6,
   },
   btnCancel: {
     padding: 15,
     borderRadius: 10,
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#F2F2F7',
+    backgroundColor: colors.background.card,
   },
+  textBtnCancel: { color: colors.text.secondary, fontWeight: '600' },
 })

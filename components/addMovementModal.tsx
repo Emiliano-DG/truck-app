@@ -15,6 +15,7 @@ import {
   View,
 } from 'react-native'
 import { useTruckStore } from '../store/useTruckStore'
+import ModalActions from './ModalActions'
 
 interface AddMovementModalProps {
   visible: boolean
@@ -142,14 +143,7 @@ export function AddMovementModal({
               value={form.description}
               onChangeText={(text) => setForm({ ...form, description: text })}
             />
-            <View style={styles.buttons}>
-              <Pressable style={styles.btnCancel} onPress={onClose}>
-                <Text style={styles.btnCancelText}>Cancelar</Text>
-              </Pressable>
-              <Pressable style={styles.btnSave} onPress={handleSave}>
-                <Text style={styles.btnSaveText}>Agregar</Text>
-              </Pressable>
-            </View>
+            <ModalActions onClose={onClose} handleSave={handleSave} />
           </KeyboardAvoidingView>
         </View>
       </TouchableWithoutFeedback>

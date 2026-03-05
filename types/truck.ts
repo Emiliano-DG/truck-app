@@ -1,3 +1,8 @@
+import {
+  GastoCategory,
+  IngresoCategory,
+} from '@/features/BusinessMovement/businessMovementCategory'
+
 export interface Movement {
   id: string
   type: 'adelanto' | 'comision'
@@ -13,13 +18,20 @@ export interface Truck {
   movements: Movement[]
 }
 
-export type BusinessCategory = 'Combustible' | 'Seguro' | 'Taller' | 'Otros'
-
-export interface BusinessMovement {
-  id: string
-  date: string
-  type: 'ingreso' | 'gasto'
-  category: BusinessCategory //categoría del gasto
-  description: string
-  amount: number
-}
+export type BusinessMovement =
+  | {
+      id: string
+      date: string
+      type: 'gasto'
+      category: GastoCategory
+      description: string
+      amount: number
+    }
+  | {
+      id: string
+      date: string
+      type: 'ingreso'
+      category: IngresoCategory
+      description: string
+      amount: number
+    }
