@@ -5,12 +5,16 @@ import { useBusinessMovementStore } from '@/store/useBusinessMovementStore'
 
 import { useState } from 'react'
 import {
+  Keyboard,
+  KeyboardAvoidingView,
   Modal,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
+  TouchableNativeFeedback,
   View,
 } from 'react-native'
 import ModalActions from './ModalActions'
@@ -85,102 +89,107 @@ export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
 
   return (
     <Modal visible={visible} animationType="fade" transparent>
-      <View style={styles.overlay}>
-        <View style={styles.modalContainer}>
-          <Text style={styles.title}> Nuevo Gasto/Ingreso General 💸</Text>
-
-          <View style={styles.typeSelector}>
-            {/* Boton ingreso */}
-            <Pressable
-              style={[
-                styles.typeBtn,
-                form.type === 'ingreso' && styles.typeBtnActiveIngreso,
-              ]}
-              onPress={() => handleChangeType('ingreso')}
-            >
-              <Text
-                style={[
-                  styles.typeBtnText,
-                  form.type === 'ingreso' && styles.textWhite,
-                ]}
-              >
-                Ingreso
-              </Text>
-            </Pressable>
-
-            {/* Boton comision */}
-            <Pressable
-              style={[
-                styles.typeBtn,
-                form.type === 'gasto' && styles.typeBtnActiveGasto,
-              ]}
-              onPress={() => handleChangeType('gasto')}
-            >
-              <Text
-                style={[
-                  styles.typeBtnText,
-                  form.type === 'gasto' && styles.textWhite,
-                ]}
-              >
-                Gasto
-              </Text>
-            </Pressable>
-          </View>
-
-          <Text style={styles.label}>Categoría</Text>
-
-          {/* Mostramos las categorias segun el tipo seleccionado */}
-
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.catScroll}
-          >
-            {categories.map((cat) => (
-              <Pressable
-                key={cat}
-                style={[
-                  styles.catBtn,
-                  form.category === cat && styles.catBtnActive,
-                ]}
-                onPress={() => setForm({ ...form, category: cat })}
-              >
-                <Text
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <TouchableNativeFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.overlay}>
+            <View style={styles.modalContainer}>
+              <View style={styles.typeSelector}>
+                {/* Boton ingreso */}
+                <Pressable
                   style={[
-                    styles.catText,
-                    form.category === cat && styles.textCard,
+                    styles.typeBtn,
+                    form.type === 'ingreso' && styles.typeBtnActiveIngreso,
                   ]}
+                  onPress={() => handleChangeType('ingreso')}
                 >
-                  {cat}
-                </Text>
-              </Pressable>
-            ))}
-          </ScrollView>
+                  <Text
+                    style={[
+                      styles.typeBtnText,
+                      form.type === 'ingreso' && styles.textWhite,
+                    ]}
+                  >
+                    Ingreso
+                  </Text>
+                </Pressable>
 
-          <TextInput
-            placeholder="Descripción"
-            placeholderTextColor={colors.text.secondary}
-            style={styles.input}
-            value={form.description}
-            onChangeText={(v) => setForm({ ...form, description: v })}
-          />
-          <TextInput
-            placeholder="Monto $"
-            placeholderTextColor={colors.text.secondary}
-            style={styles.input}
-            keyboardType="numeric"
-            value={form.amount}
-            onChangeText={(v) => setForm({ ...form, amount: v })}
-          />
-          <TextInput
-            style={styles.input}
-            value={form.date}
-            onChangeText={(v) => setForm({ ...form, date: v })}
-          />
+                {/* Boton comision */}
+                <Pressable
+                  style={[
+                    styles.typeBtn,
+                    form.type === 'gasto' && styles.typeBtnActiveGasto,
+                  ]}
+                  onPress={() => handleChangeType('gasto')}
+                >
+                  <Text
+                    style={[
+                      styles.typeBtnText,
+                      form.type === 'gasto' && styles.textWhite,
+                    ]}
+                  >
+                    Gasto
+                  </Text>
+                </Pressable>
+              </View>
 
-          <ModalActions onClose={onClose} handleSave={handleSave} />
-        </View>
-      </View>
+              <Text style={styles.label}>Categoría</Text>
+
+              {/* Mostramos las categorias segun el tipo seleccionado */}
+
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                style={styles.catScroll}
+              >
+                {categories.map((cat) => (
+                  <Pressable
+                    key={cat}
+                    style={[
+                      styles.catBtn,
+                      form.category === cat && styles.catBtnActive,
+                    ]}
+                    onPress={() => setForm({ ...form, category: cat })}
+                  >
+                    <Text
+                      style={[
+                        styles.catText,
+                        form.category === cat && styles.textCard,
+                      ]}
+                    >
+                      {cat}
+                    </Text>
+                  </Pressable>
+                ))}
+              </ScrollView>
+
+              <TextInput
+                placeholder="Descripción"
+                placeholderTextColor={colors.text.muted}
+                style={styles.input}
+                value={form.description}
+                onChangeText={(v) => setForm({ ...form, description: v })}
+              />
+              <TextInput
+                placeholder="Monto $"
+                placeholderTextColor={colors.text.muted}
+                style={styles.input}
+                keyboardType="numeric"
+                value={form.amount}
+                onChangeText={(v) => setForm({ ...form, amount: v })}
+              />
+              <TextInput
+                style={styles.input}
+                value={form.date}
+                onChangeText={(v) => setForm({ ...form, date: v })}
+              />
+
+              <ModalActions onClose={onClose} handleSave={handleSave} />
+            </View>
+          </View>
+        </TouchableNativeFeedback>
+      </KeyboardAvoidingView>
     </Modal>
   )
 }
@@ -241,10 +250,10 @@ const styles = StyleSheet.create({
   typeBtnText: { fontWeight: '600', color: colors.text.secondary },
   input: {
     backgroundColor: colors.background.card,
-    color: colors.text.secondary,
+    color: colors.text.primary,
+    borderColor: colors.accent.main,
     padding: 15,
     borderRadius: 10,
-    borderColor: colors.background.surface,
     borderWidth: 1,
     marginBottom: 15,
   },

@@ -1,14 +1,19 @@
+import { colors } from '@/constants/colors'
 import React, { useState } from 'react'
 import {
+  Keyboard,
+  KeyboardAvoidingView,
   Modal,
-  Pressable,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
+  TouchableNativeFeedback,
   View,
 } from 'react-native'
 import { truckSchema } from '../schemas/truckSchema'
 import { useTruckStore } from '../store/useTruckStore'
+import ModalActions from './ModalActions'
 
 export default function AddTruckModal({
   visible,
@@ -58,34 +63,34 @@ export default function AddTruckModal({
       transparent={true}
       onRequestClose={onClose}
     >
-      <View style={styles.overlay}>
-        <View style={styles.modalContent}>
-          <Text style={styles.title}>Nuevo Camión 🚛</Text>
-          {errors && <Text style={styles.error}>{errors}</Text>}
-          <TextInput
-            placeholder="Modelo"
-            onChangeText={(t) => setForm({ ...form, model: t })}
-            style={styles.input}
-          />
-          <TextInput
-            placeholder="Conductor"
-            onChangeText={(t) => setForm({ ...form, driverName: t })}
-            style={styles.input}
-          />
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+      >
+        <TouchableNativeFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.overlay}>
+            <View style={styles.modalContent}>
+              <Text style={styles.title}>Nuevo Camión 🚛</Text>
+              {errors && <Text style={styles.error}>{errors}</Text>}
+              <TextInput
+                placeholder="Modelo"
+                placeholderTextColor={colors.text.muted}
+                onChangeText={(t) => setForm({ ...form, model: t })}
+                style={styles.input}
+              />
+              <TextInput
+                placeholder="Conductor"
+                placeholderTextColor={colors.text.muted}
+                onChangeText={(t) => setForm({ ...form, driverName: t })}
+                style={styles.input}
+              />
 
-          <View style={styles.buttonContainer}>
-            <Pressable style={[styles.btn, styles.btnCancel]} onPress={onClose}>
-              <Text style={styles.buttonText}>Cerrar</Text>
-            </Pressable>
-            <Pressable
-              style={[styles.btn, styles.btnSave]}
-              onPress={handleSave}
-            >
-              <Text style={styles.buttonText}>Guardar</Text>
-            </Pressable>
+              <ModalActions onClose={onClose} handleSave={handleSave} />
+            </View>
           </View>
-        </View>
-      </View>
+        </TouchableNativeFeedback>
+      </KeyboardAvoidingView>
     </Modal>
   )
 }
@@ -97,14 +102,23 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: colors.background.surface,
     padding: 25,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
-  title: { fontSize: 20, fontWeight: 'bold', marginBottom: 20 },
+  title: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    marginBottom: 30,
+    color: colors.text.primary,
+    textAlign: 'center',
+  },
   input: {
-    backgroundColor: '#F2F2F7',
+    backgroundColor: colors.background.card,
+    color: colors.text.primary,
+    borderColor: colors.accent.main,
+    borderWidth: 1,
     padding: 15,
     borderRadius: 10,
     marginBottom: 12,

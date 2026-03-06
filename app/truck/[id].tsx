@@ -75,7 +75,7 @@ export default function DetailsTrucks() {
 
       {/* Boton para agregar */}
       <Pressable style={styles.addButton} onPress={() => setModalVisible(true)}>
-        <Text style={styles.addButtonText}>+ Cargar Movimiento</Text>
+        <Text style={styles.addButtonText}>Cargar Movimiento</Text>
       </Pressable>
       <AddMovementModal
         visible={modalVisible}
@@ -108,13 +108,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: colors.text.secondary,
   },
-  driverSub: { color: colors.text.secondary, marginBottom: 15 },
+  driverSub: { color: colors.text.muted, marginBottom: 15 },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  label: { fontSize: 12, color: '#8E8E93', textTransform: 'uppercase' },
+  label: {
+    fontSize: 12,
+    color: colors.text.primary,
+    textTransform: 'uppercase',
+  },
   mainBalance: { fontSize: 28, fontWeight: 'bold' },
   listContainer: {
     paddingHorizontal: 20,
@@ -127,20 +131,24 @@ const styles = StyleSheet.create({
   listTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: colors.primary,
+    color: colors.text.primary,
   },
   addButton: {
-    backgroundColor: colors.primary,
+    backgroundColor: colors.primary.light,
     margin: 35,
     padding: 12,
     borderRadius: 15,
     alignItems: 'center',
   },
   addButtonText: {
-    color: '#fff',
+    color: colors.background.main,
     fontWeight: 'bold',
     fontSize: 16,
   },
-  emptyText: { textAlign: 'center', marginTop: 50, color: colors.textLight },
+  emptyText: {
+    textAlign: 'center',
+    marginTop: 50,
+    color: colors.background.surface,
+  },
   list: { paddingHorizontal: 20, paddingBottom: 100 },
 })

@@ -1,6 +1,7 @@
 import { AddBusinessModal } from '@/components/AddBusinessModal'
 import { FabButton } from '@/components/FabButton'
 import MovementCard from '@/components/MovementCard'
+import { ScreenHeader } from '@/components/ScreenHeader'
 import { colors } from '@/constants/colors'
 import { useBusinessMovementStore } from '@/store/useBusinessMovementStore'
 import { BusinessMovement } from '@/types/truck'
@@ -35,7 +36,12 @@ export default function emprendimiento() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
-        <Text style={styles.title}>Gastos Generales 💸</Text>
+        <ScreenHeader
+          title="Emprendimiento"
+          subtitle="Lista de Gastos Generales"
+          icon="💸"
+        />
+        {/* <Text style={styles.title}>Gastos Generales 💸</Text> */}
         <View style={styles.totalCard}>
           <Text style={styles.totalLabel}>Total:</Text>
           <Text
@@ -89,6 +95,8 @@ const styles = StyleSheet.create({
   title: { fontSize: 28, fontWeight: 'bold', marginBottom: 20 },
   totalCard: {
     backgroundColor: colors.background.surface,
+
+    borderWidth: 1,
     padding: 20,
     borderRadius: 15,
   },

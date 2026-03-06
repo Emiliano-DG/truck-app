@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   description: { fontSize: 16, fontWeight: '500', color: colors.text.primary },
-  date: { fontSize: 11, color: colors.text.secondary },
+  date: { fontSize: 11, color: colors.text.muted, marginTop: 2 },
   amountContainer: {
     flexDirection: 'row',
     alignItems: 'center',

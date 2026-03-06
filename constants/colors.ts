@@ -29,6 +29,7 @@ export const colors = {
   text: {
     primary: '#FFFFFF',
     secondary: '#e0e0e0',
+    muted: '#6B7280',
   },
   status: {
     success: '#26A69A',

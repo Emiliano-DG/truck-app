@@ -18,7 +18,7 @@ export default function TruckCard({ item }: { item: Truck }) {
         <Ionicons
           name="chevron-forward"
           size={20}
-          color={colors.accent.light}
+          color={colors.primary.soft}
         />
       </Pressable>
     </Link>
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   driverNameText: {
     fontSize: 14,
-    color: colors.text.secondary,
+    color: colors.text.muted,
     marginTop: 4,
   },
   arrowText: {

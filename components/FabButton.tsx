@@ -10,7 +10,7 @@ interface FabButtonProps {
 export const FabButton = ({ onPress, icon = 'add' }: FabButtonProps) => {
   return (
     <Pressable style={styles.fabButton} onPress={onPress}>
-      <Ionicons name={icon} size={30} color={colors.text.primary} />
+      <Ionicons name={icon} size={30} color={colors.background.main} />
     </Pressable>
   )
 }
