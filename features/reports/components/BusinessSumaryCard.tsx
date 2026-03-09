@@ -1,4 +1,5 @@
 import { colors } from '@/constants/colors'
+import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
@@ -15,20 +16,20 @@ export function BusinessSumaryCard({
 }: BusinessSumaryCardProps) {
   return (
     <View style={styles.sectionCard}>
-      <Text style={styles.sectionTitle}>Operacion de Emprendimiento</Text>
+      <Text style={styles.sectionTitle}>Operaciones</Text>
       <View style={styles.sectionRow}>
-        <Text>Ingresos</Text>
+        <View style={styles.arrow}>
+          <Ionicons name="arrow-up" size={17} color={colors.status.success} />
+          <Text style={styles.sectionText}>Ingresos</Text>
+        </View>
         <Text style={styles.green}>${ingresos.toLocaleString('es-AR')}</Text>
       </View>
       <View style={styles.sectionRow}>
-        <Text>Gastos</Text>
+        <View style={styles.arrow}>
+          <Ionicons name="arrow-down" size={17} color={colors.status.danger} />
+          <Text style={styles.sectionText}>Gastos</Text>
+        </View>
         <Text style={styles.red}>${gastos.toLocaleString('es-AR')}</Text>
-      </View>
-      <View style={[styles.sectionRow, styles.subtotal]}>
-        <Text style={styles.resultBalance}>Balance Emprendimiento</Text>
-        <Text style={styles.resultBalance}>
-          ${businessBalance.toLocaleString('es-AR')}
-        </Text>
       </View>
     </View>
   )
@@ -36,32 +37,40 @@ export function BusinessSumaryCard({
 
 const styles = StyleSheet.create({
   sectionCard: {
-    backgroundColor: colors.card,
+    backgroundColor: colors.background.card,
     padding: 20,
     borderRadius: 15,
     marginBottom: 15,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: colors.background.surface,
   },
   sectionTitle: {
-    fontSize: 13,
+    fontSize: 18,
     fontWeight: 'bold',
-    color: colors.textLight,
+    color: colors.text.primary,
     marginBottom: 15,
-    textTransform: 'uppercase',
+  },
+  sectionText: {
+    fontSize: 13,
+    color: colors.primary.soft,
   },
   sectionRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 10,
   },
-  green: { color: colors.income, fontWeight: '600' },
-  red: { color: colors.expense, fontWeight: '600' },
-  resultBalance: { fontWeight: 'bold', fontSize: 16, color: colors.text },
-  subtotal: {
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
-    paddingTop: 10,
-    marginTop: 5,
-  },
+  arrow: { flexDirection: 'row', alignItems: 'center', gap: 5 },
+  green: { color: colors.status.success, fontWeight: '600' },
+  red: { color: colors.status.danger, fontWeight: '600' },
+  // resultBalance: {
+  //   fontWeight: 'bold',
+  //   fontSize: 16,
+  //   color: colors.text.secondary,
+  // },
+  // subtotal: {
+  //   borderTopWidth: 1,
+  //   borderTopColor: colors.text.muted,
+  //   paddingTop: 10,
+  //   marginTop: 5,
+  // },
 })

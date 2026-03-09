@@ -12,7 +12,8 @@ export function NetResultCard({ resultadoNeto }: NetResultCardProps) {
       style={[
         styles.mainCard,
         {
-          backgroundColor: resultadoNeto >= 0 ? colors.income : colors.expense,
+          backgroundColor:
+            resultadoNeto >= 0 ? colors.status.success : colors.status.danger,
         },
       ]}
     >
@@ -27,13 +28,13 @@ export function NetResultCard({ resultadoNeto }: NetResultCardProps) {
 const styles = StyleSheet.create({
   mainCard: { padding: 30, borderRadius: 20, marginBottom: 25, elevation: 4 },
   mainLabel: {
-    color: 'rgba(255,255,255,0.8)',
+    color: colors.text.secondary,
     fontSize: 14,
     textTransform: 'uppercase',
     fontWeight: 'bold',
   },
   mainAmount: {
-    color: 'rgba(255,255,255,0.8)',
+    color: colors.text.primary,
     fontSize: 36,
     fontWeight: 'bold',
     marginTop: 5,

@@ -13,8 +13,13 @@ export default function RootLayout() {
         screenOptions={{
           headerShown: false,
           headerShadowVisible: false,
-          tabBarShowLabel: false,
           tabBarStyle: styles.tabBar,
+
+          tabBarActiveTintColor: colors.accent.light,
+          tabBarInactiveTintColor: colors.text.muted,
+
+          tabBarLabelStyle: styles.LabelStyle,
+
           tabBarItemStyle: {
             paddingVertical: 8,
           },
@@ -28,7 +33,7 @@ export default function RootLayout() {
               <Ionicons
                 name={focused ? 'car' : 'car-outline'}
                 size={size}
-                color={colors.accent.light}
+                color={color}
               />
             ),
           }}
@@ -41,7 +46,7 @@ export default function RootLayout() {
               <Ionicons
                 name={focused ? 'briefcase' : 'briefcase-outline'}
                 size={size}
-                color={colors.accent.light}
+                color={color}
               />
             ),
           }}
@@ -54,7 +59,7 @@ export default function RootLayout() {
               <Ionicons
                 name={focused ? 'stats-chart' : 'stats-chart-outline'}
                 size={size}
-                color={colors.accent.light}
+                color={color}
               />
             ),
           }}
@@ -67,7 +72,7 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
   tabBar: {
     backgroundColor: colors.background.card,
-    height: 70,
+    height: 80,
     paddingBottom: 10,
     borderTopWidth: 0,
     elevation: 15, // Android
@@ -75,6 +80,13 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: -3 },
     shadowOpacity: 0.08,
     shadowRadius: 8,
+
+    // borderTopLeftRadius: 13,
+    // borderTopRightRadius: 13,
   },
-  tabBarItem: {},
+  LabelStyle: {
+    fontSize: 13,
+    fontWeight: '600',
+    marginTop: -2,
+  },
 })

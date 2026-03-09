@@ -1,6 +1,5 @@
 import AddTruckModal from '@/components/AddTruckModal'
 import { FabButton } from '@/components/FabButton'
-import { ScreenHeader } from '@/components/ScreenHeader'
 import TruckCard from '@/components/TruckCard'
 import { colors } from '@/constants/colors'
 import { useTruckStore } from '@/store/useTruckStore'
@@ -16,11 +15,6 @@ export default function CamionesScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScreenHeader
-        title="Camiones"
-        subtitle="Lista de camiones disponibles"
-        icon="🚚"
-      />
       {/* <Text style={styles.title}>Camiones 🚚</Text> */}
       <FlatList
         data={trucks}
@@ -45,6 +39,7 @@ export default function CamionesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 20,
     backgroundColor: colors.background.main,
   },
   title: {

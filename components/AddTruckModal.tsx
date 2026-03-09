@@ -66,7 +66,7 @@ export default function AddTruckModal({
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 0}
       >
         <TouchableNativeFeedback onPress={Keyboard.dismiss}>
           <View style={styles.overlay}>
@@ -100,12 +100,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     backgroundColor: 'rgba(0,0,0,0.5)',
+    paddingBottom: 20, // 👈 espacio entre modal y teclado
   },
   modalContent: {
     backgroundColor: colors.background.surface,
     padding: 25,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    paddingBottom: 35,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: -3 },
+    shadowRadius: 8,
+    elevation: 10,
   },
   title: {
     fontSize: 25,

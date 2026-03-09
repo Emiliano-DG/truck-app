@@ -1,4 +1,5 @@
 import { AddMovementModal } from '@/components/AddMovementModal'
+import BackButton from '@/components/BackButton'
 import MovementCard from '@/components/MovementCard'
 import { colors } from '@/constants/colors'
 import { useTruckStore } from '@/store/useTruckStore'
@@ -29,6 +30,11 @@ export default function DetailsTrucks() {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Bonton volver */}
+      <View style={styles.headerTop}>
+        <BackButton />
+      </View>
+
       {/* Header con balance */}
       <View style={styles.balanceCard}>
         <Text style={styles.truckTitle}>{truck.model}</Text>
@@ -91,6 +97,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background.main,
   },
+  headerTop: {
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)', // Un círculo sutil de fondo
+  },
   balanceCard: {
     backgroundColor: colors.background.surface,
     padding: 25,
@@ -115,8 +135,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   label: {
-    fontSize: 12,
-    color: colors.text.primary,
+    fontSize: 13,
+    color: colors.primary.soft,
     textTransform: 'uppercase',
   },
   mainBalance: { fontSize: 28, fontWeight: 'bold' },

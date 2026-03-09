@@ -1,7 +1,6 @@
 import { AddBusinessModal } from '@/components/AddBusinessModal'
 import { FabButton } from '@/components/FabButton'
 import MovementCard from '@/components/MovementCard'
-import { ScreenHeader } from '@/components/ScreenHeader'
 import { colors } from '@/constants/colors'
 import { useBusinessMovementStore } from '@/store/useBusinessMovementStore'
 import { BusinessMovement } from '@/types/truck'
@@ -36,14 +35,8 @@ export default function emprendimiento() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
-        <ScreenHeader
-          title="Emprendimiento"
-          subtitle="Lista de Gastos Generales"
-          icon="💸"
-        />
-        {/* <Text style={styles.title}>Gastos Generales 💸</Text> */}
         <View style={styles.totalCard}>
-          <Text style={styles.totalLabel}>Total:</Text>
+          <Text style={styles.totalLabel}>Balance</Text>
           <Text
             style={[
               styles.totalAmount,
@@ -66,6 +59,7 @@ export default function emprendimiento() {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <MovementCard
+            category={item.category}
             description={item.description}
             date={item.date}
             amount={item.amount}
@@ -90,19 +84,23 @@ export default function emprendimiento() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background.main },
+  container: {
+    flex: 1,
+    backgroundColor: colors.background.main,
+    paddingTop: 20,
+  },
   headerContainer: { padding: 10 },
-  title: { fontSize: 28, fontWeight: 'bold', marginBottom: 20 },
+
   totalCard: {
     backgroundColor: colors.background.surface,
-
+    alignItems: 'center',
     borderWidth: 1,
     padding: 20,
     borderRadius: 15,
   },
   totalLabel: {
-    color: colors.text.primary,
-    fontSize: 12,
+    color: colors.primary.soft,
+    fontSize: 15,
     textTransform: 'uppercase',
   },
   totalAmount: { fontSize: 32, fontWeight: 'bold' },
