@@ -1,8 +1,8 @@
 import { colors } from '@/constants/colors'
 import { CATEGORIES } from '@/features/BusinessMovement/businessMovementCategory'
 import { businessMovementSchema } from '@/features/BusinessMovement/businessMovementSchema'
-import { useBusinessMovementStore } from '@/store/useBusinessMovementStore'
 
+import { useAddMovement } from '@/hooks/useMovement'
 import { useState } from 'react'
 import {
   Keyboard,
@@ -35,7 +35,8 @@ type FormType = {
 }
 
 export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
-  const { addBusinessMovement } = useBusinessMovementStore((state) => state)
+  // const { addBusinessMovement } = useBusinessMovementStore((state) => state)
+  const { mutate: addMovement, isPending } = useAddMovement()
 
   // Estado para el formulario
   const [form, setForm] = useState<FormType>({

@@ -15,7 +15,7 @@ export default function RootLayout() {
           headerShadowVisible: false,
           tabBarStyle: styles.tabBar,
 
-          tabBarActiveTintColor: colors.accent.light,
+          tabBarActiveTintColor: colors.primary.light,
           tabBarInactiveTintColor: colors.text.muted,
 
           tabBarLabelStyle: styles.LabelStyle,

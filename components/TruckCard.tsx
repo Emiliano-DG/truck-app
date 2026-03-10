@@ -18,7 +18,7 @@ export default function TruckCard({ item }: { item: Truck }) {
         <Ionicons
           name="chevron-forward"
           size={20}
-          color={colors.primary.soft}
+          color={colors.primary.light}
         />
       </Pressable>
     </Link>
