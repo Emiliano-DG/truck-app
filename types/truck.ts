@@ -18,6 +18,7 @@ export interface Truck {
   movements: Movement[]
 }
 
+// Tipos para los movimientos generales del negocio (no asociados a un camión)
 export type BusinessMovement =
   | {
       id: string

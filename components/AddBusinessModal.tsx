@@ -36,6 +36,8 @@ type FormType = {
 
 export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
   // const { addBusinessMovement } = useBusinessMovementStore((state) => state)
+
+  //Hook para agregar movimiento a la base de datos y actualizar la cache automaticamente
   const { mutate: addMovement, isPending } = useAddMovement()
 
   // Estado para el formulario
@@ -51,6 +53,7 @@ export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
 
   // Función para guardar el gasto/ingreso
   const handleSave = () => {
+    console.log('Intentando guardar:', form) // <--- AGREGÁ ESTO
     const result = businessMovementSchema.safeParse(form)
 
     if (!result.success) {
@@ -59,25 +62,34 @@ export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
     }
 
     const newMovement = {
-      id: Date.now().toString(),
-      ...result.data,
+      description: result.data.description,
+      amount: Number(result.data.amount),
+      category: result.data.category,
+      type: result.data.type,
+      date: result.data.date,
+      truck_id: null, // Es un movimiento general, no asociado a un camión
     }
 
-    addBusinessMovement(newMovement)
-
-    setForm({
-      description: '',
-      amount: '',
-      category: CATEGORIES.gasto[0],
-      type: 'gasto' as 'gasto' | 'ingreso',
-      date: new Date().toISOString().split('T')[0],
+    addMovement(newMovement, {
+      onSuccess: () => {
+        // Solo reseteamos el formulario y cerramos el modal si la mutación fue exitosa,
+        setForm({
+          description: '',
+          amount: '',
+          category: CATEGORIES.gasto[0],
+          type: 'gasto' as 'gasto' | 'ingreso',
+          date: new Date().toISOString().split('T')[0],
+        })
+        setErrors('')
+        onClose()
+      },
+      onError: (error) => {
+        setErrors(error.message)
+      },
     })
-
-    setErrors('')
-
-    onClose()
   }
 
+  // Función para cambiar el tipo de movimiento (gasto o ingreso) y actualizar las categorías disponibles
   const handleChangeType = (newType: 'gasto' | 'ingreso') => {
     setForm((prev) => ({
       ...prev,

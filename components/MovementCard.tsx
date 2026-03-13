@@ -42,7 +42,7 @@ export default function MovementCard({
           {sign} ${amount.toLocaleString('es-AR')}
         </Text>
 
-        {/* Boton de tres puntitos para  eliminar el gasto */}
+        {/* Boton  para  eliminar el gasto */}
         {showOptions && onOptionsPress && (
           <Pressable onPress={onOptionsPress} style={styles.optionsBtn}>
             <Ionicons
