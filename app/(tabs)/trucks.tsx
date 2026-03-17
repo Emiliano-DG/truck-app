@@ -2,15 +2,13 @@ import AddTruckModal from '@/components/AddTruckModal'
 import { FabButton } from '@/components/FabButton'
 import TruckCard from '@/components/TruckCard'
 import { colors } from '@/constants/colors'
-import { useTruckStore } from '@/store/useTruckStore'
+import { useReadTrucks } from '@/hooks/useTrucks'
 import { useState } from 'react'
 import { FlatList, StyleSheet, Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function CamionesScreen() {
-  //1. Cargamos los datos de los camiones (mockTrucks), luego vendra el backend
-  // const [trucks] = useState<Truck[]>(MOCK_TRUCKS)
-  const trucks = useTruckStore((state) => state.trucks)
+  const { data: trucks, isLoading, isError } = useReadTrucks()
   const [modalVisible, setModalVisible] = useState(false)
 
   return (

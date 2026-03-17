@@ -1,19 +1,26 @@
 import { AddBusinessModal } from '@/components/AddBusinessModal'
 import { FabButton } from '@/components/FabButton'
+import { LoadingView } from '@/components/LoadingView'
 import MovementCard from '@/components/MovementCard'
 import { colors } from '@/constants/colors'
+import { useDeleteBusinessMovement, useMovement } from '@/hooks/useMovement'
 import { useBusinessMovementStore } from '@/store/useBusinessMovementStore'
 import { BusinessMovement } from '@/types/truck'
 import { calculateBusinessBalance } from '@/utils/finance'
+import { useQuery } from '@tanstack/react-query'
 import React, { useState } from 'react'
 import { Alert, FlatList, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function emprendimiento() {
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const { movements, deleteBusinessMovement } = useBusinessMovementStore(
-    (state) => state,
-  )
+  const { deleteBusinessMovement } = useBusinessMovementStore((state) => state)
+
+  // Hook para obtener los movimientos de la base de datos y mantenerlos actualizados
+  const { data: movements = [], isLoading } = useQuery(useMovement())
+
+  // Hook para eliminar un movimiento de la base de datos y actualizar la cache automaticamente
+  const { mutate: borrarEnSupabase } = useDeleteBusinessMovement()
 
   const { businessBalance } = calculateBusinessBalance(movements)
 
@@ -26,10 +33,17 @@ export default function emprendimiento() {
         {
           text: 'Eliminar',
           style: 'destructive',
-          onPress: () => deleteBusinessMovement(item.id),
+          onPress: () => {
+            borrarEnSupabase(item.id) // Elimina de Supabase
+          },
         },
       ],
     )
+  }
+
+  // Mostrar pantalla de carga mientras se obtienen los movimientos
+  if (isLoading) {
+    return <LoadingView message="Cargando datos..." />
   }
 
   return (

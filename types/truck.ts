@@ -15,7 +15,6 @@ export interface Truck {
   id: string
   model: string //nombre del camión
   driverName: string //nombre del conductor
-  movements: Movement[]
 }
 
 // Tipos para los movimientos generales del negocio (no asociados a un camión)

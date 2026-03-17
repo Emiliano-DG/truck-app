@@ -1,4 +1,5 @@
 import { colors } from '@/constants/colors'
+import { useAddTruck } from '@/hooks/useTrucks'
 import React, { useState } from 'react'
 import {
   Keyboard,
@@ -12,7 +13,6 @@ import {
   View,
 } from 'react-native'
 import { truckSchema } from '../schemas/truckSchema'
-import { useTruckStore } from '../store/useTruckStore'
 import ModalActions from './ModalActions'
 
 export default function AddTruckModal({
@@ -22,8 +22,8 @@ export default function AddTruckModal({
   visible: boolean
   onClose: () => void
 }) {
-  // Traemos la funcion addTruck del store
-  const addTruck = useTruckStore((state) => state.addTruck)
+  // Hook para agregar un nuevo camión a la base de datos y actualizar la cache automaticamente
+  const { mutate: addTruck } = useAddTruck()
 
   // Estado para guardar los datos del formulario
   const [form, setForm] = useState({
@@ -44,10 +44,8 @@ export default function AddTruckModal({
     }
 
     addTruck({
-      id: Math.random().toString(36).substring(7), //id temporal
       model: form.model,
       driverName: form.driverName,
-      movements: [],
     })
 
     //Limpiamos el formulario
