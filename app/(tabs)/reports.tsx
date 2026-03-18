@@ -1,15 +1,17 @@
 import MovementCard from '@/components/MovementCard'
 import { colors } from '@/constants/colors'
 import { BusinessSumaryCard, NetResultCard } from '@/features/reports'
-import { useBusinessMovementStore } from '@/store/useBusinessMovementStore'
+import { useMovement } from '@/hooks/useMovement'
 import { calculateBusinessBalance } from '@/utils/finance'
 import { Ionicons } from '@expo/vector-icons'
+import { useQuery } from '@tanstack/react-query'
 import React, { useState } from 'react'
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function reportes() {
-  const { movements } = useBusinessMovementStore()
+  // const { movements } = useBusinessMovementStore()
+  const { data: movements = [], isLoading } = useQuery(useMovement())
 
   const [selectedMonth, setSelectedMonth] = useState(new Date())
 
@@ -50,11 +52,12 @@ export default function reportes() {
         acc[categoria] += current.amount
         return acc
       },
+      // esto se hace para que TypeScript entienda que el acumulador es un objeto con claves de string y valores numéricos
       {} as Record<string, number>,
     )
 
   //  Convertir a un array para poder usar .map()
-  const categoriasArray = Object.entries(gastosPorCategoria)
+  const categoriasArray: [string, number][] = Object.entries(gastosPorCategoria)
 
   return (
     <SafeAreaView style={styles.container}>

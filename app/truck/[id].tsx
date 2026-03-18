@@ -2,7 +2,7 @@ import { AddMovementModal } from '@/components/AddMovementModal'
 import BackButton from '@/components/BackButton'
 import MovementCard from '@/components/MovementCard'
 import { colors } from '@/constants/colors'
-import { useTruckStore } from '@/store/useTruckStore'
+import { useReadTrucks } from '@/hooks/useTrucks'
 import { calculateBalance } from '@/utils/finance'
 import { useLocalSearchParams } from 'expo-router'
 import React, { useState } from 'react'
@@ -11,11 +11,17 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function DetailsTrucks() {
   const { id } = useLocalSearchParams<{ id: string }>()
-  const truck = useTruckStore((state) =>
-    state.trucks.find((truck) => truck.id === id),
-  )
-
   const [modalVisible, setModalVisible] = useState(false)
+
+  // Traemos la lisma de camiones y buscamos el actual por el id
+  const {
+    data: trucks = [],
+    isLoading: loadingTrucks,
+    isError,
+  } = useReadTrucks()
+  const truck = trucks.find((t) => Number(t.id) === Number(id))
+
+  //Traemos los movimientos especificos de este camion
 
   //Si no se encuentra el camion, mostrar un mensaje de error
   if (!truck) {

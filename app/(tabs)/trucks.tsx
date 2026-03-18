@@ -11,12 +11,21 @@ export default function CamionesScreen() {
   const { data: trucks, isLoading, isError } = useReadTrucks()
   const [modalVisible, setModalVisible] = useState(false)
 
+  //TODO: TERMINAR DE HACERLO MEJOR VISUALMENTE
+  if (isLoading) return <Text>Cargando...</Text>
+  if (isError)
+    return (
+      <Text style={styles.error}>
+        No pudimos cargar los camiones, intente nuevamente..
+      </Text>
+    )
+
   return (
     <SafeAreaView style={styles.container}>
       {/* <Text style={styles.title}>Camiones 🚚</Text> */}
       <FlatList
         data={trucks}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <TruckCard item={item} />}
         contentContainerStyle={styles.listPadding}
         ListEmptyComponent={
@@ -70,4 +79,5 @@ const styles = StyleSheet.create({
     zIndex: 1000,
   },
   emptyText: { textAlign: 'center', marginTop: 50, color: '#8E8E93' },
+  error: { textAlign: 'center', marginTop: 50, color: 'red' },
 })

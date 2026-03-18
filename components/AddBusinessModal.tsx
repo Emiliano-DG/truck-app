@@ -35,8 +35,6 @@ type FormType = {
 }
 
 export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
-  // const { addBusinessMovement } = useBusinessMovementStore((state) => state)
-
   //Hook para agregar movimiento a la base de datos y actualizar la cache automaticamente
   const { mutate: addMovement, isPending } = useAddMovement()
 

@@ -10,9 +10,14 @@ export function useReadTrucks() {
       const { data, error } = await supabase
         .from('trucks')
         .select('*')
-        .order('name', { ascending: true })
+        .order('model', { ascending: true })
 
-      if (error) throw error
+      if (error) {
+        console.log('SUPABASE ERROR:', error)
+        throw error
+      }
+
+      // if (error) throw error
       return data as Truck[]
     },
   })
