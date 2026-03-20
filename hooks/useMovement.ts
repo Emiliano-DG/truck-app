@@ -7,10 +7,10 @@ import 'react-native-url-polyfill/auto'
 export interface MovementInsert {
   description: string
   amount: number
-  type: 'gasto' | 'ingreso'
+  type: 'gasto' | 'ingreso' | 'adelanto' | 'comision'
   category: string
   date: string
-  truck_id: string | null
+  truck_id: number | null
 }
 
 //Funcion para TRAER los movimientos (Gastos Generales)
@@ -41,7 +41,6 @@ export function useAddMovement() {
         .insert([newMovement])
         .select()
       if (error) {
-        console.error('ERROR DE SUPABASE:', error.message)
         throw new Error(error.message)
       }
       return data[0] // Devuelve el movimiento recién creado

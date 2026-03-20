@@ -1,8 +1,9 @@
 import { AddMovementModal } from '@/components/AddMovementModal'
 import BackButton from '@/components/BackButton'
+import { LoadingView } from '@/components/LoadingView'
 import MovementCard from '@/components/MovementCard'
 import { colors } from '@/constants/colors'
-import { useReadTrucks } from '@/hooks/useTrucks'
+import { useReadTrucks, useTrckMovements } from '@/hooks/useTrucks'
 import { calculateBalance } from '@/utils/finance'
 import { useLocalSearchParams } from 'expo-router'
 import React, { useState } from 'react'
@@ -13,26 +14,48 @@ export default function DetailsTrucks() {
   const { id } = useLocalSearchParams<{ id: string }>()
   const [modalVisible, setModalVisible] = useState(false)
 
+  //Llamamos los hooks
   // Traemos la lisma de camiones y buscamos el actual por el id
   const {
     data: trucks = [],
     isLoading: loadingTrucks,
-    isError,
+    isError: errorTrucks,
   } = useReadTrucks()
-  const truck = trucks.find((t) => Number(t.id) === Number(id))
 
   //Traemos los movimientos especificos de este camion
+  const {
+    data: movements = [],
+    isLoading: loadingMovements,
+    isError: errorMovements,
+  } = useTrckMovements(id)
 
-  //Si no se encuentra el camion, mostrar un mensaje de error
-  if (!truck) {
+  //Chequeamos que este todo cargado
+  if (loadingTrucks || loadingMovements) return <LoadingView />
+
+  //Chequeamos si hubo algun error
+  if (errorTrucks || errorMovements) {
     return (
-      <View style={styles.container}>
-        <Text>Camión no encontrado</Text>
+      <View style={styles.containerError}>
+        <Text style={styles.error}>
+          No pudimos cargar los camiones, intente nuevamente..
+        </Text>
       </View>
     )
   }
 
-  const { balance } = calculateBalance(truck.movements)
+  //Buscamos el camion actual
+  const truck = trucks.find((t) => Number(t.id) === Number(id))
+
+  //Si no se encuentra el camion, mostrar un mensaje de error
+  if (!truck) {
+    return (
+      <View style={styles.containerError}>
+        <Text style={styles.error}>No pudimos encontrar el camion</Text>
+      </View>
+    )
+  }
+
+  const { balance } = calculateBalance(movements)
 
   return (
     <SafeAreaView style={styles.container}>
@@ -69,7 +92,7 @@ export default function DetailsTrucks() {
         <Text style={styles.listTitle}>Movimientos</Text>
       </View>
       <FlatList
-        data={truck.movements}
+        data={movements}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <MovementCard
@@ -177,4 +200,24 @@ const styles = StyleSheet.create({
     color: colors.background.surface,
   },
   list: { paddingHorizontal: 20, paddingBottom: 100 },
+  containerError: {
+    flex: 1,
+    backgroundColor: '#F9FAFB',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  error: {
+    fontSize: 16,
+    color: '#DC2626',
+    textAlign: 'center',
+    fontWeight: '600',
+    lineHeight: 22,
+    backgroundColor: '#FEE2E2',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#FECACA',
+    overflow: 'hidden',
+  },
 })

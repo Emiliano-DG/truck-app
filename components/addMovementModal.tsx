@@ -1,6 +1,6 @@
 import { colors } from '@/constants/colors'
+import { useAddMovement } from '@/hooks/useMovement'
 import { movementSchema } from '@/schemas/movementSchema'
-import { Movement } from '@/types/truck'
 import { useState } from 'react'
 import {
   Keyboard,
@@ -14,7 +14,6 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native'
-import { useTruckStore } from '../store/useTruckStore'
 import ModalActions from './ModalActions'
 
 interface AddMovementModalProps {
@@ -28,8 +27,10 @@ export function AddMovementModal({
   onClose,
   truckId,
 }: AddMovementModalProps) {
-  const addMovement = useTruckStore((state) => state.addMovement)
+  // Hook para agregar un nuevo movimiento a la base de datos
+  const { mutate: addMovement } = useAddMovement()
 
+  // Estado para guardar los datos del formulario
   const [form, setForm] = useState({
     description: '',
     amount: '',
@@ -39,6 +40,7 @@ export function AddMovementModal({
 
   const [errors, setErrors] = useState('')
 
+  // Funcion para guardar el nuevo movimiento
   const handleSave = () => {
     const result = movementSchema.safeParse(form)
 
@@ -47,23 +49,31 @@ export function AddMovementModal({
       return
     }
 
-    const newMovement: Movement = {
-      id: Date.now().toString(),
-      ...result.data,
+    const newMovement = {
+      description: result.data.description,
+      amount: Number(result.data.amount),
+      type: result.data.type,
+      date: result.data.date,
+      category: truckId ? 'Camiones' : 'General',
+      truck_id: truckId ? Number(truckId) : null, // SI hay truckId, lo pone. SI NO, pone null.
     }
 
-    addMovement(truckId, newMovement)
-
-    setForm({
-      description: '',
-      amount: '',
-      type: 'adelanto',
-      date: new Date().toISOString().split('T')[0],
+    addMovement(newMovement, {
+      onSuccess: () => {
+        // Solo reseteamos el formulario y cerramos el modal si la mutación fue exitosa,
+        setForm({
+          description: '',
+          amount: '',
+          type: 'adelanto',
+          date: new Date().toISOString().split('T')[0],
+        })
+        setErrors('')
+        onClose()
+      },
+      onError: (error) => {
+        setErrors(error.message)
+      },
     })
-
-    setErrors('')
-
-    onClose()
   }
 
   return (

@@ -36,7 +36,7 @@ type FormType = {
 
 export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
   //Hook para agregar movimiento a la base de datos y actualizar la cache automaticamente
-  const { mutate: addMovement, isPending } = useAddMovement()
+  const { mutate: addMovement } = useAddMovement()
 
   // Estado para el formulario
   const [form, setForm] = useState<FormType>({
@@ -51,7 +51,6 @@ export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
 
   // Función para guardar el gasto/ingreso
   const handleSave = () => {
-    console.log('Intentando guardar:', form) // <--- AGREGÁ ESTO
     const result = businessMovementSchema.safeParse(form)
 
     if (!result.success) {

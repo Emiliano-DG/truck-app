@@ -44,3 +44,23 @@ export function useAddTruck() {
     },
   })
 }
+
+// Para LEER los movimientos de un camión
+export function useTrckMovements(truckId: string | undefined) {
+  return useQuery({
+    // La queryKey incluye el truckId para que si cambias de camión, se refresque
+    queryKey: ['truck-movements', truckId],
+    queryFn: async () => {
+      if (!truckId) return [] // Si no hay ID, devolvemos lista vacía
+      const { data, error } = await supabase
+        .from('movements')
+        .select('*')
+        .eq('truck_id', Number(truckId))
+        .order('date', { ascending: false })
+
+      if (error) throw error
+      return data
+    },
+    enabled: !!truckId, // Solo se ejecuta si el ID existe
+  })
+}
