@@ -60,7 +60,7 @@ export default function reportes() {
   const categoriasArray: [string, number][] = Object.entries(gastosPorCategoria)
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       {/* Selector de fecha */}
       <View style={styles.header}>
         {/* Boton para cambiar al mes anteior */}
@@ -189,6 +189,7 @@ const styles = StyleSheet.create({
   navBtn: { padding: 4 },
   scroll: {
     padding: 20,
+    paddingBottom: 110,
   },
   monthSelector: {
     padding: 5,

@@ -1,35 +1,81 @@
 import { colors } from '@/constants/colors'
+import { useDeleteTruck } from '@/hooks/useTrucks'
 import { Ionicons } from '@expo/vector-icons'
 import { Link } from 'expo-router'
-import React from 'react'
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import React, { useRef } from 'react'
+import { Alert, Animated, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Swipeable } from 'react-native-gesture-handler'
 import { Truck } from '../types/truck'
 
 export default function TruckCard({ item }: { item: Truck }) {
-  return (
-    <Link href={{ pathname: '/truck/[id]', params: { id: item.id } }} asChild>
-      <Pressable style={styles.card}>
-        <View>
-          <Text style={styles.modelText}>{item.model}</Text>
-          <Text style={styles.driverNameText}>{item.driverName}</Text>
-        </View>
-        {/* Indicador visual de que se puede entrar a ver mas */}
-        {/* <Text style={styles.arrowText}>{'>'}</Text> */}
-        <Ionicons
-          name="chevron-forward"
-          size={20}
-          color={colors.primary.light}
-        />
+  const swipeableRef = useRef<Swipeable>(null)
+  const { mutate: deleteTruck } = useDeleteTruck()
+
+  const handleDelete = () => {
+    swipeableRef.current?.close()
+    Alert.alert(
+      'Eliminar camión',
+      `¿Estás seguro de que querés eliminar "${item.model}"? Se borrarán también sus movimientos.`,
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Eliminar',
+          style: 'destructive',
+          onPress: () => deleteTruck(Number(item.id)),
+        },
+      ]
+    )
+  }
+
+  const renderRightActions = (
+    _progress: Animated.AnimatedInterpolation<number>,
+    dragX: Animated.AnimatedInterpolation<number>
+  ) => {
+    const scale = dragX.interpolate({
+      inputRange: [-100, 0],
+      outputRange: [1, 0.5],
+      extrapolate: 'clamp',
+    })
+
+    return (
+      <Pressable onPress={handleDelete} style={styles.deleteContainer}>
+        <Animated.View style={[styles.deleteButton, { transform: [{ scale }] }]}>
+          <Ionicons name="trash" size={24} color="#fff" />
+        </Animated.View>
       </Pressable>
-    </Link>
+    )
+  }
+
+  return (
+    <Swipeable
+      ref={swipeableRef}
+      renderRightActions={renderRightActions}
+      overshootRight={false}
+      friction={2}
+    >
+      <Link href={{ pathname: '/truck/[id]', params: { id: item.id } }} asChild>
+        <Pressable style={styles.card}>
+          <View style={styles.leftContent}>
+            <Text style={styles.truckEmoji}>🚚</Text>
+            <View style={styles.infoContainer}>
+              <Text style={styles.modelText}>{item.model}</Text>
+              <Text style={styles.driverNameText}>{item.driverName}</Text>
+            </View>
+          </View>
+
+          {/* Indicador visual de que se puede entrar a ver mas */}
+          <Ionicons
+            name="chevron-forward"
+            size={20}
+            color={colors.primary.light}
+          />
+        </Pressable>
+      </Link>
+    </Swipeable>
   )
 }
 
 const styles = StyleSheet.create({
-  listPadding: {
-    paddingHorizontal: 20,
-    paddingBottom: 20,
-  },
   card: {
     backgroundColor: colors.background.card,
     padding: 20,
@@ -37,8 +83,8 @@ const styles = StyleSheet.create({
     borderColor: colors.background.surface,
     borderWidth: 1,
     marginBottom: 12,
-    flexDirection: 'row', // pone los textos y la flecha en linea
-    justifyContent: 'space-between', // separa los textos de la flecha
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
     // sombras para ios y android
     elevation: 3, // android
@@ -46,6 +92,18 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 }, // ios
     shadowOpacity: 0.1, // ios
     shadowRadius: 4, // ios
+  },
+  leftContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  truckEmoji: {
+    fontSize: 28,
+    marginRight: 12,
+  },
+  infoContainer: {
+    justifyContent: 'center',
   },
   modelText: {
     fontSize: 18,
@@ -57,10 +115,19 @@ const styles = StyleSheet.create({
     color: colors.text.muted,
     marginTop: 4,
   },
-  arrowText: {
-    fontSize: 18,
-    color: colors.text.secondary,
+  deleteContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 80,
+    marginBottom: 12,
+    borderRadius: 15,
   },
-  balanceText: {},
-  balanceLabel: {},
+  deleteButton: {
+    backgroundColor: colors.status.danger,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 55,
+    height: 55,
+    borderRadius: 30,
+  },
 })

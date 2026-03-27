@@ -1,50 +1,132 @@
-# Welcome to your Expo app 👋
+# 🚚 TruckApp — Gestión de Flota y Finanzas
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Aplicación móvil construida con **React Native + Expo** para gestionar una flota de camiones, registrar movimientos financieros por vehículo y controlar las finanzas generales del emprendimiento.
 
-## Get started
+---
 
-1. Install dependencies
+## ✨ Funcionalidades
 
-   ```bash
-   npm install
-   ```
+### 🚛 Gestión de Camiones
+- Alta de camiones con modelo y conductor
+- Eliminación con **swipe-to-delete** (deslizar para borrar) y confirmación
+- Vista de detalle por camión con balance individual
+- Registro de movimientos (adelantos, comisiones) por cada camión
 
-2. Start the app
+### 💼 Gestión del Emprendimiento
+- Registro de ingresos y gastos generales del negocio
+- Categorización de movimientos (combustible, peajes, seguros, reparaciones, etc.)
+- Balance general en tiempo real
+- Eliminación de movimientos con confirmación
 
-   ```bash
-   npx expo start
-   ```
+### 📊 Reportes Financieros
+- Filtro por mes con navegación temporal
+- Card de **Resultado Neto** mensual
+- Resumen de ingresos vs. gastos
+- Desglose de **gastos por categoría** con barras de porcentaje
+- Listado detallado de movimientos del mes
 
-In the output, you'll find options to open the app in a
+---
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 🛠️ Tech Stack
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+| Tecnología | Uso |
+|---|---|
+| **React Native** | Framework de UI multiplataforma |
+| **Expo SDK 54** | Entorno de desarrollo y build |
+| **Expo Router** | Navegación basada en file-system |
+| **TypeScript** | Tipado estático |
+| **Supabase** | Base de datos PostgreSQL + API REST |
+| **TanStack Query** | Data fetching, caching y sincronización |
+| **Zustand** | Estado global ligero |
+| **React Hook Form + Zod** | Formularios con validación tipada |
+| **React Native Gesture Handler** | Gestos nativos (swipe-to-delete) |
+| **React Native Reanimated** | Animaciones fluidas a 60fps |
 
-## Get a fresh project
+---
 
-When you're ready, run:
+## 📁 Estructura del Proyecto
 
-```bash
-npm run reset-project
+```
+truck-app/
+├── app/                        # Pantallas (Expo Router file-based routing)
+│   ├── (tabs)/                 # Tab navigation
+│   │   ├── trucks.tsx          # Lista de camiones
+│   │   ├── business.tsx        # Movimientos del emprendimiento
+│   │   └── reports.tsx         # Reportes financieros
+│   ├── truck/
+│   │   └── [id].tsx            # Detalle de camión (ruta dinámica)
+│   └── _layout.tsx             # Layout raíz con providers
+├── components/                 # Componentes reutilizables
+│   ├── TruckCard.tsx           # Card con swipe-to-delete
+│   ├── MovementCard.tsx        # Card de movimiento financiero
+│   ├── AddTruckModal.tsx       # Modal para agregar camión
+│   ├── AddMovementModal.tsx    # Modal para movimientos de camión
+│   ├── AddBusinessModal.tsx    # Modal para movimientos del negocio
+│   ├── FabButton.tsx           # Floating Action Button
+│   └── ...
+├── hooks/                      # Custom hooks
+│   ├── useTrucks.tsx           # CRUD de camiones + movimientos
+│   └── useMovement.ts          # CRUD de movimientos del negocio
+├── features/                   # Feature modules
+│   ├── BusinessMovement/       # Categorías y schemas del negocio
+│   └── reports/                # Componentes de reportes
+├── store/                      # Zustand stores
+├── schemas/                    # Validación con Zod
+├── types/                      # Tipos TypeScript
+├── lib/                        # Configuración de Supabase
+├── utils/                      # Funciones utilitarias (cálculos financieros)
+└── constants/                  # Colores y constantes
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## 🏗️ Arquitectura
 
-To learn more about developing your project with Expo, look at the following resources:
+```
+┌──────────────────────────────────────────────┐
+│                    UI Layer                   │
+│           (Expo Router + Components)          │
+├──────────────────────────────────────────────┤
+│               State Management               │
+│        TanStack Query    |    Zustand         │
+│        (server state)    |  (client state)    │
+├──────────────────────────────────────────────┤
+│                Data Layer                     │
+│      Custom Hooks (useTrucks, useMovement)    │
+├──────────────────────────────────────────────┤
+│                  Backend                      │
+│           Supabase (PostgreSQL)               │
+└──────────────────────────────────────────────┘
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- **Server State** (TanStack Query): Maneja toda la comunicación con Supabase con caching automático, invalidación y refetch.
+- **Client State** (Zustand): Estado local de la UI como filtros y modales.
+- **Validación**: Zod + React Hook Form para validar formularios antes de enviar datos.
 
-## Join the community
+---
 
-Join our community of developers creating universal apps.
+## 🚀 Instalación
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+# Clonar el repositorio
+git clone https://github.com/Emiliano-DG/truck-app.git
+cd truck-app
+
+# Instalar dependencias
+npm install
+
+# Configurar variables de entorno
+# Crear archivo .env con las credenciales de Supabase:
+# EXPO_PUBLIC_SUPABASE_URL=tu_url
+# EXPO_PUBLIC_SUPABASE_ANON_KEY=tu_key
+
+# Iniciar el servidor de desarrollo
+npx expo start
+```
+
+---
+
+## 📱 Plataformas
+
+- ✅ Android (edge-to-edge habilitado)
+- ✅ iOS

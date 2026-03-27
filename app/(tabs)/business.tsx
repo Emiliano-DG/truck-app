@@ -47,7 +47,7 @@ export default function emprendimiento() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.headerContainer}>
         <View style={styles.totalCard}>
           <Text style={styles.totalLabel}>Balance</Text>
@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background.main,
-    paddingTop: 20,
   },
   headerContainer: { padding: 10 },
 

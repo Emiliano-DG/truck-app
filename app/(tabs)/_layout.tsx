@@ -3,9 +3,12 @@ import { Ionicons } from '@expo/vector-icons'
 import { Tabs } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
-import { StyleSheet } from 'react-native'
+import { Platform, StyleSheet } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 export default function RootLayout() {
+  const insets = useSafeAreaInsets()
+
   return (
     <>
       <StatusBar style="light" />
@@ -13,7 +16,15 @@ export default function RootLayout() {
         screenOptions={{
           headerShown: false,
           headerShadowVisible: false,
-          tabBarStyle: styles.tabBar,
+          tabBarStyle: [
+            styles.tabBar,
+            {
+              // En Android con Edge-to-Edge, insets.bottom es el tamaño de la barra del sistema
+              // Ajustamos la altura para acomodar el safe area bottom
+              height: Platform.OS === 'android' ? 80 + insets.bottom : 80,
+              paddingBottom: Platform.OS === 'android' ? insets.bottom + 10 : 10,
+            },
+          ],
 
           tabBarActiveTintColor: colors.primary.light,
           tabBarInactiveTintColor: colors.text.muted,

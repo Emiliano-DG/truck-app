@@ -64,3 +64,20 @@ export function useTrckMovements(truckId: string | undefined) {
     enabled: !!truckId, // Solo se ejecuta si el ID existe
   })
 }
+
+// Para BORRAR un camión
+export function useDeleteTruck() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (truckId: number) => {
+      const { error } = await supabase.from('trucks').delete().eq('id', truckId)
+
+      if (error) throw error
+    },
+    onSuccess: () => {
+      // Refrescamos la lista de camiones automáticamente
+      queryClient.invalidateQueries({ queryKey: ['trucks'] })
+    },
+  })
+}

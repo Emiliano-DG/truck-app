@@ -1,5 +1,6 @@
 import AddTruckModal from '@/components/AddTruckModal'
 import { FabButton } from '@/components/FabButton'
+import { LoadingView } from '@/components/LoadingView'
 import TruckCard from '@/components/TruckCard'
 import { colors } from '@/constants/colors'
 import { useReadTrucks } from '@/hooks/useTrucks'
@@ -11,8 +12,7 @@ export default function CamionesScreen() {
   const { data: trucks, isLoading, isError } = useReadTrucks()
   const [modalVisible, setModalVisible] = useState(false)
 
-  //TODO: TERMINAR DE HACERLO MEJOR VISUALMENTE
-  if (isLoading) return <Text>Cargando...</Text>
+  if (isLoading) return <LoadingView />
   if (isError)
     return (
       <Text style={styles.error}>
@@ -21,7 +21,7 @@ export default function CamionesScreen() {
     )
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       {/* <Text style={styles.title}>Camiones 🚚</Text> */}
       <FlatList
         data={trucks}
@@ -46,7 +46,6 @@ export default function CamionesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
     backgroundColor: colors.background.main,
   },
   title: {
@@ -59,24 +58,7 @@ const styles = StyleSheet.create({
   listPadding: {
     paddingTop: 20,
     paddingHorizontal: 20,
-    paddingBottom: 20,
-  },
-  fabButton: {
-    position: 'absolute',
-    bottom: 50,
-    right: 24,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: colors.background.surface,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 6,
-    elevation: 6,
-    zIndex: 1000,
+    paddingBottom: 110, // Para evitar que el último elemento quede bajo las pestañas
   },
   emptyText: { textAlign: 'center', marginTop: 50, color: '#8E8E93' },
   error: { textAlign: 'center', marginTop: 50, color: 'red' },
