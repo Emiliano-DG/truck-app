@@ -3,9 +3,16 @@ import { useDeleteTruck } from '@/hooks/useTrucks'
 import { Ionicons } from '@expo/vector-icons'
 import { Link } from 'expo-router'
 import React, { useRef } from 'react'
-import { Alert, Animated, Pressable, StyleSheet, Text, View } from 'react-native'
+import {
+  Alert,
+  Animated,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native'
 import { Swipeable } from 'react-native-gesture-handler'
-import { Truck } from '../types/truck'
+import { Truck } from '../../../types/truck'
 
 export default function TruckCard({ item }: { item: Truck }) {
   const swipeableRef = useRef<Swipeable>(null)
@@ -23,13 +30,13 @@ export default function TruckCard({ item }: { item: Truck }) {
           style: 'destructive',
           onPress: () => deleteTruck(Number(item.id)),
         },
-      ]
+      ],
     )
   }
 
   const renderRightActions = (
     _progress: Animated.AnimatedInterpolation<number>,
-    dragX: Animated.AnimatedInterpolation<number>
+    dragX: Animated.AnimatedInterpolation<number>,
   ) => {
     const scale = dragX.interpolate({
       inputRange: [-100, 0],
@@ -39,7 +46,9 @@ export default function TruckCard({ item }: { item: Truck }) {
 
     return (
       <Pressable onPress={handleDelete} style={styles.deleteContainer}>
-        <Animated.View style={[styles.deleteButton, { transform: [{ scale }] }]}>
+        <Animated.View
+          style={[styles.deleteButton, { transform: [{ scale }] }]}
+        >
           <Ionicons name="trash" size={24} color="#fff" />
         </Animated.View>
       </Pressable>

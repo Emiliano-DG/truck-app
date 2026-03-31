@@ -1,6 +1,7 @@
 import { colors } from '@/constants/colors'
 import { useAddTruck } from '@/hooks/useTrucks'
-import React, { useState } from 'react'
+import * as NavigationBar from 'expo-navigation-bar'
+import React, { useEffect, useState } from 'react'
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -12,8 +13,8 @@ import {
   TouchableNativeFeedback,
   View,
 } from 'react-native'
+import ModalActions from '../../../components/ModalActions'
 import { truckSchema } from '../schemas/truckSchema'
-import ModalActions from './ModalActions'
 
 export default function AddTruckModal({
   visible,
@@ -22,6 +23,13 @@ export default function AddTruckModal({
   visible: boolean
   onClose: () => void
 }) {
+  // Sincronizar barra de navegación cuando el modal se abre
+  useEffect(() => {
+    if (visible && Platform.OS === 'android') {
+      NavigationBar.setButtonStyleAsync('light')
+    }
+  }, [visible])
+
   // Hook para agregar un nuevo camión a la base de datos y actualizar la cache automaticamente
   const { mutate: addTruck } = useAddTruck()
 
@@ -97,8 +105,7 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    paddingBottom: 20, // 👈 espacio entre modal y teclado
+    backgroundColor: 'rgba(0, 0, 0, 0.7)', // Negro semitransparente (podés usar colors.background.main + 'CC' si querés exacto)
   },
   modalContent: {
     backgroundColor: colors.background.surface,

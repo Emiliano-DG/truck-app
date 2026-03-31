@@ -1,6 +1,7 @@
 import { colors } from '@/constants/colors'
+import { movementSchema } from '@/features/trucks/schemas/movementSchema'
 import { useAddMovement } from '@/hooks/useMovement'
-import { movementSchema } from '@/schemas/movementSchema'
+import { formatDate } from '@/utils/formatDate'
 import { useState } from 'react'
 import {
   Keyboard,
@@ -14,7 +15,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native'
-import ModalActions from './ModalActions'
+import ModalActions from '../../../components/ModalActions'
 
 interface AddMovementModalProps {
   visible: boolean
@@ -75,6 +76,9 @@ export function AddMovementModal({
       },
     })
   }
+
+  // Funcion para formatear la fecha
+  const formattedDate = formatDate(form.date)
 
   return (
     <Modal visible={visible} animationType="fade" transparent>
@@ -151,7 +155,7 @@ export function AddMovementModal({
               <TextInput
                 placeholder="Fecha"
                 style={styles.input}
-                value={form.date}
+                value={formattedDate}
                 onChangeText={(date) => setForm({ ...form, date })}
               />
 
@@ -168,7 +172,7 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     padding: 20,
   },
   modalContainer: {

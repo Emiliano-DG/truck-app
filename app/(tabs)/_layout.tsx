@@ -22,7 +22,8 @@ export default function RootLayout() {
               // En Android con Edge-to-Edge, insets.bottom es el tamaño de la barra del sistema
               // Ajustamos la altura para acomodar el safe area bottom
               height: Platform.OS === 'android' ? 80 + insets.bottom : 80,
-              paddingBottom: Platform.OS === 'android' ? insets.bottom + 10 : 10,
+              paddingBottom:
+                Platform.OS === 'android' ? insets.bottom + 10 : 10,
             },
           ],
 
@@ -82,18 +83,15 @@ export default function RootLayout() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    backgroundColor: colors.background.card,
+    backgroundColor: colors.background.card, // O cambiá a colors.background.surface si querés el azul grisáceo
     height: 80,
     paddingBottom: 10,
     borderTopWidth: 0,
-    elevation: 15, // Android
+    elevation: 0, // Sacamos la sombra para que se funda con la barra de navegación
     shadowColor: '#000', // iOS
     shadowOffset: { width: 0, height: -3 },
     shadowOpacity: 0.08,
     shadowRadius: 8,
-
-    // borderTopLeftRadius: 13,
-    // borderTopRightRadius: 13,
   },
   LabelStyle: {
     fontSize: 13,

@@ -1,8 +1,8 @@
-import { z } from 'zod'
 import {
   CATEGORIASINGRESOS,
   CATEGORIESGASTOS,
-} from './businessMovementCategory'
+} from '@/features/Business/constants/businessMovementCategory'
+import { z } from 'zod'
 
 export const businessMovementSchema = z.discriminatedUnion('type', [
   z.object({

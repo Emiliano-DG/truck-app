@@ -1,4 +1,5 @@
 import { colors } from '@/constants/colors'
+import { formatDate } from '@/utils/formatDate'
 import { Ionicons } from '@expo/vector-icons'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 
@@ -23,12 +24,17 @@ export default function MovementCard({
 }: MovementCardProps) {
   const isPositive = type === 'ingreso' || type === 'adelanto'
   const sign = isPositive ? '+' : '-'
+
+  const formattedDate = formatDate(date)
+
   return (
     <View style={styles.expenseItem}>
-      <View>
+      <View style={{ flex: 1, marginRight: 10 }}>
         {category && <Text style={styles.categoryBadge}>{category}</Text>}
-        <Text style={styles.description}>{description}</Text>
-        <Text style={styles.date}>{date}</Text>
+        <Text style={styles.description} numberOfLines={1} ellipsizeMode="tail">
+          {description}
+        </Text>
+        <Text style={styles.date}>{formattedDate}</Text>
       </View>
       <View style={styles.amountContainer}>
         <Text

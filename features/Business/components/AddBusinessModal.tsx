@@ -1,8 +1,9 @@
 import { colors } from '@/constants/colors'
-import { CATEGORIES } from '@/features/BusinessMovement/businessMovementCategory'
-import { businessMovementSchema } from '@/features/BusinessMovement/businessMovementSchema'
+import { CATEGORIES } from '@/features/Business/constants/businessMovementCategory'
+import { businessMovementSchema } from '@/features/Business/schemas/businessMovementSchema'
 
 import { useAddMovement } from '@/hooks/useMovement'
+import { formatDate } from '@/utils/formatDate'
 import { useState } from 'react'
 import {
   Keyboard,
@@ -17,7 +18,7 @@ import {
   TouchableNativeFeedback,
   View,
 } from 'react-native'
-import ModalActions from './ModalActions'
+import ModalActions from '../../../components/ModalActions'
 
 interface AddBusinessModalProps {
   visible: boolean
@@ -95,13 +96,18 @@ export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
     }))
   }
 
+  // Categorías disponibles
   const categories = CATEGORIES[form.type]
+
+  // Formatear la fecha
+  const formattedDate = formatDate(form.date)
 
   return (
     <Modal visible={visible} animationType="fade" transparent>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
       >
         <TouchableNativeFeedback onPress={Keyboard.dismiss}>
           <View style={styles.overlay}>
@@ -191,7 +197,7 @@ export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
               />
               <TextInput
                 style={styles.input}
-                value={form.date}
+                value={formattedDate}
                 onChangeText={(v) => setForm({ ...form, date: v })}
               />
 
@@ -209,12 +215,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'flex-end',
+    paddingBottom: 10,
   },
   modalContainer: {
     backgroundColor: colors.background.surface,
     padding: 25,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    borderRadius: 20,
     elevation: 4,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },

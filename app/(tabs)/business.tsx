@@ -1,10 +1,9 @@
-import { AddBusinessModal } from '@/components/AddBusinessModal'
 import { FabButton } from '@/components/FabButton'
 import { LoadingView } from '@/components/LoadingView'
 import MovementCard from '@/components/MovementCard'
 import { colors } from '@/constants/colors'
+import { AddBusinessModal } from '@/features/Business/components/AddBusinessModal'
 import { useDeleteBusinessMovement, useMovement } from '@/hooks/useMovement'
-import { useBusinessMovementStore } from '@/store/useBusinessMovementStore'
 import { BusinessMovement } from '@/types/truck'
 import { calculateBusinessBalance } from '@/utils/finance'
 import { useQuery } from '@tanstack/react-query'
@@ -14,7 +13,6 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function emprendimiento() {
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const { deleteBusinessMovement } = useBusinessMovementStore((state) => state)
 
   // Hook para obtener los movimientos de la base de datos y mantenerlos actualizados
   const { data: movements = [], isLoading } = useQuery(useMovement())
@@ -46,6 +44,9 @@ export default function emprendimiento() {
     return <LoadingView message="Cargando datos..." />
   }
 
+  // Mostrar los primeros 20 movimientos
+  const recentMovements = movements.slice(0, 3)
+
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.headerContainer}>
@@ -69,7 +70,7 @@ export default function emprendimiento() {
       </View>
 
       <FlatList
-        data={movements}
+        data={recentMovements}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <MovementCard
@@ -85,6 +86,11 @@ export default function emprendimiento() {
         contentContainerStyle={styles.list}
         ListEmptyComponent={
           <Text style={styles.emptyText}>No hay gastos registrados</Text>
+        }
+        ListFooterComponent={
+          movements.length > 3 ? (
+            <Text style={styles.emptyText}>Ver más en el reporte..</Text>
+          ) : null
         }
       />
 
@@ -108,7 +114,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background.surface,
     alignItems: 'center',
     borderWidth: 1,
-    padding: 20,
+    padding: 30,
     borderRadius: 15,
   },
   totalLabel: {

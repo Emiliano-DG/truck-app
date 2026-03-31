@@ -1,7 +1,7 @@
 import {
   GastoCategory,
   IngresoCategory,
-} from '@/features/BusinessMovement/businessMovementCategory'
+} from '@/features/Business/constants/businessMovementCategory'
 
 export interface Movement {
   id: string
