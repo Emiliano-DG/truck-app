@@ -39,6 +39,10 @@ export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
   //Hook para agregar movimiento a la base de datos y actualizar la cache automaticamente
   const { mutate: addMovement } = useAddMovement()
 
+  const [dateInput, setDateInput] = useState(
+    formatDate(new Date().toISOString().split('T')[0]),
+  )
+
   // Estado para el formulario
   const [form, setForm] = useState<FormType>({
     description: '',
@@ -79,6 +83,7 @@ export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
           date: new Date().toISOString().split('T')[0],
         })
         setErrors('')
+        setDateInput(formatDate(new Date().toISOString().split('T')[0]))
         onClose()
       },
       onError: (error) => {
@@ -98,9 +103,6 @@ export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
 
   // Categorías disponibles
   const categories = CATEGORIES[form.type]
-
-  // Formatear la fecha
-  const formattedDate = formatDate(form.date)
 
   return (
     <Modal visible={visible} animationType="fade" transparent>
@@ -200,8 +202,27 @@ export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
               />
               <TextInput
                 style={styles.input}
-                value={formattedDate}
-                onChangeText={(v) => setForm({ ...form, date: v })}
+                value={dateInput}
+                onChangeText={(dateText) => {
+                  // Permitir que el usuario borre libremente
+                  setDateInput(dateText)
+
+                  // Si el usuario borra todo, limpiar la fecha
+                  if (!dateText.trim()) {
+                    setForm({ ...form, date: '' })
+                    return
+                  }
+
+                  // Si escribe en formato DD-MM-YYYY, convertir a YYYY-MM-DD
+                  const parts = dateText.split('-').filter(Boolean)
+                  if (parts.length === 3) {
+                    const [day, month, year] = parts
+                    if (day && month && year) {
+                      // Convertir a formato YYYY-MM-DD
+                      setForm({ ...form, date: `${year}-${month}-${day}` })
+                    }
+                  }
+                }}
               />
 
               <ModalActions onClose={onClose} handleSave={handleSave} />

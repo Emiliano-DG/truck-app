@@ -40,6 +40,7 @@ export function AddMovementModal({
   })
 
   const [errors, setErrors] = useState('')
+  const [dateInput, setDateInput] = useState(formatDate(new Date().toISOString().split('T')[0]))
 
   // Funcion para guardar el nuevo movimiento
   const handleSave = () => {
@@ -69,6 +70,7 @@ export function AddMovementModal({
           date: new Date().toISOString().split('T')[0],
         })
         setErrors('')
+        setDateInput(formatDate(new Date().toISOString().split('T')[0]))
         onClose()
       },
       onError: (error) => {
@@ -76,9 +78,6 @@ export function AddMovementModal({
       },
     })
   }
-
-  // Funcion para formatear la fecha
-  const formattedDate = formatDate(form.date)
 
   return (
     <Modal visible={visible} animationType="fade" transparent>
@@ -157,23 +156,25 @@ export function AddMovementModal({
               <TextInput
                 placeholder="Fecha (DD-MM-YYYY)"
                 style={styles.input}
-                value={formattedDate}
+                value={dateInput}
                 onChangeText={(dateText) => {
-                  // Si el usuario borra todo, dejar vacío
+                  // Permitir que el usuario borre libremente
+                  setDateInput(dateText)
+
+                  // Si el usuario borra todo, limpiar la fecha
                   if (!dateText.trim()) {
                     setForm({ ...form, date: '' })
                     return
                   }
 
                   // Si escribe en formato DD-MM-YYYY, convertir a YYYY-MM-DD
-                  const parts = dateText.split('-')
+                  const parts = dateText.split('-').filter(Boolean)
                   if (parts.length === 3) {
                     const [day, month, year] = parts
-                    // Convertir a formato YYYY-MM-DD
-                    setForm({ ...form, date: `${year}-${month}-${day}` })
-                  } else {
-                    // Si no tiene guiones, guardarlo como está
-                    setForm({ ...form, date: dateText })
+                    if (day && month && year) {
+                      // Convertir a formato YYYY-MM-DD
+                      setForm({ ...form, date: `${year}-${month}-${day}` })
+                    }
                   }
                 }}
               />
