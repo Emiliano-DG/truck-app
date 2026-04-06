@@ -115,9 +115,10 @@ export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
               <View style={styles.typeSelector}>
                 {/* Boton ingreso */}
                 <Pressable
-                  style={[
+                  style={({ pressed }) => [
                     styles.typeBtn,
                     form.type === 'ingreso' && styles.typeBtnActiveIngreso,
+                    { opacity: pressed ? 0.7 : 1 },
                   ]}
                   onPress={() => handleChangeType('ingreso')}
                 >
@@ -133,9 +134,10 @@ export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
 
                 {/* Boton comision */}
                 <Pressable
-                  style={[
+                  style={({ pressed }) => [
                     styles.typeBtn,
                     form.type === 'gasto' && styles.typeBtnActiveGasto,
+                    { opacity: pressed ? 0.7 : 1 },
                   ]}
                   onPress={() => handleChangeType('gasto')}
                 >
@@ -162,9 +164,10 @@ export function AddBusinessModal({ visible, onClose }: AddBusinessModalProps) {
                 {categories.map((cat) => (
                   <Pressable
                     key={cat}
-                    style={[
+                    style={({ pressed }) => [
                       styles.catBtn,
                       form.category === cat && styles.catBtnActive,
+                      { opacity: pressed ? 0.7 : 1 },
                     ]}
                     onPress={() => setForm({ ...form, category: cat })}
                   >

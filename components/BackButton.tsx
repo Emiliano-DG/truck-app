@@ -7,7 +7,13 @@ import { Pressable, StyleSheet } from 'react-native'
 export default function BackButton() {
   const navigation = useNavigation()
   return (
-    <Pressable onPress={() => navigation.goBack()} style={styles.backButton}>
+    <Pressable
+      style={({ pressed }) => [
+        styles.backButton,
+        { opacity: pressed ? 0.7 : 1 },
+      ]}
+      onPress={() => navigation.goBack()}
+    >
       <Ionicons name="arrow-back" size={24} color="#fff" />
     </Pressable>
   )

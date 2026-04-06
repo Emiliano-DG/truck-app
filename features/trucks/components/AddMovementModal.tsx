@@ -98,9 +98,10 @@ export function AddMovementModal({
               <View style={styles.typeSelector}>
                 {/* Boton ingreso */}
                 <Pressable
-                  style={[
+                  style={({ pressed }) => [
                     styles.typeBtn,
                     form.type === 'adelanto' && styles.typeBtnActiveIngreso,
+                    { opacity: pressed ? 0.7 : 1 },
                   ]}
                   onPress={() => setForm({ ...form, type: 'adelanto' })}
                 >
@@ -116,9 +117,10 @@ export function AddMovementModal({
 
                 {/* Boton comision */}
                 <Pressable
-                  style={[
+                  style={({ pressed }) => [
                     styles.typeBtn,
                     form.type === 'comision' && styles.typeBtnActiveComision,
+                    { opacity: pressed ? 0.7 : 1 },
                   ]}
                   onPress={() => setForm({ ...form, type: 'comision' })}
                 >
@@ -153,10 +155,27 @@ export function AddMovementModal({
 
               {/* Input de fecha */}
               <TextInput
-                placeholder="Fecha"
+                placeholder="Fecha (DD-MM-YYYY)"
                 style={styles.input}
                 value={formattedDate}
-                onChangeText={(date) => setForm({ ...form, date })}
+                onChangeText={(dateText) => {
+                  // Si el usuario borra todo, dejar vacío
+                  if (!dateText.trim()) {
+                    setForm({ ...form, date: '' })
+                    return
+                  }
+
+                  // Si escribe en formato DD-MM-YYYY, convertir a YYYY-MM-DD
+                  const parts = dateText.split('-')
+                  if (parts.length === 3) {
+                    const [day, month, year] = parts
+                    // Convertir a formato YYYY-MM-DD
+                    setForm({ ...form, date: `${year}-${month}-${day}` })
+                  } else {
+                    // Si no tiene guiones, guardarlo como está
+                    setForm({ ...form, date: dateText })
+                  }
+                }}
               />
 
               <ModalActions onClose={onClose} handleSave={handleSave} />
@@ -176,7 +195,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   modalContainer: {
-    backgroundColor: colors.background.card,
+    backgroundColor: colors.background.surface,
     padding: 25,
     borderRadius: 20,
     elevation: 4,
@@ -203,7 +222,7 @@ const styles = StyleSheet.create({
   typeSelector: {
     flexDirection: 'row',
     marginBottom: 20,
-    backgroundColor: colors.background.surface,
+    backgroundColor: colors.background.card,
     borderRadius: 10,
     padding: 4,
   },
@@ -215,7 +234,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.status.danger,
   },
   input: {
-    backgroundColor: colors.background.surface,
+    backgroundColor: colors.background.card,
     color: colors.text.primary,
     borderColor: colors.accent.main,
     borderWidth: 1,

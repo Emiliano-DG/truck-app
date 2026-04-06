@@ -23,7 +23,9 @@ export default function reportes() {
   }
   // Filtrar movimientos del mes seleccionado
   const filteredMovements = movements.filter((movement) => {
-    const movementDate = new Date(movement.date)
+    // Parsear la fecha en formato YYYY-MM-DD de forma local (sin afectar zona horaria)
+    const [year, month, day] = movement.date.split('-').map(Number)
+    const movementDate = new Date(year, month - 1, day)
     return (
       movementDate.getMonth() === selectedMonth.getMonth() &&
       movementDate.getFullYear() === selectedMonth.getFullYear()
@@ -64,18 +66,35 @@ export default function reportes() {
       {/* Selector de fecha */}
       <View style={styles.header}>
         {/* Boton para cambiar al mes anteior */}
-        <Pressable onPress={() => changeMonth(-1)} style={styles.navBtn}>
+        <Pressable
+          style={({ pressed }) => [
+            styles.navBtn,
+            { opacity: pressed ? 0.7 : 1 },
+          ]}
+          onPress={() => changeMonth(-1)}
+        >
           <Ionicons name="chevron-back" size={24} color={colors.primary.soft} />
         </Pressable>
 
-        <Pressable style={styles.dateDisplay}>
+        <Pressable
+          style={({ pressed }) => [
+            styles.dateDisplay,
+            { opacity: pressed ? 0.7 : 1 },
+          ]}
+        >
           <Text style={styles.monthLabelText}>
             {monthLabel.toLocaleUpperCase()}
           </Text>
         </Pressable>
 
         {/* Boton para cambiar al mes siguiente */}
-        <Pressable onPress={() => changeMonth(1)} style={styles.navBtn}>
+        <Pressable
+          style={({ pressed }) => [
+            styles.navBtn,
+            { opacity: pressed ? 0.7 : 1 },
+          ]}
+          onPress={() => changeMonth(1)}
+        >
           <Ionicons
             name="chevron-forward"
             size={24}
@@ -116,32 +135,36 @@ export default function reportes() {
                 <Text style={styles.listTitle}>Gastos por Categoría</Text>
 
                 <View style={styles.categoryCard}>
-                  {categoriasArray.map(([nombre, total]) => {
-                    const porcentaje = gastos > 0 ? (total / gastos) * 100 : 0
+                  {categoriasArray
+                    .sort((a, b) => b[1] - a[1]) // Ordenamos de mayor a menor
+                    .map(([nombre, total]) => {
+                      const porcentaje = gastos > 0 ? (total / gastos) * 100 : 0
 
-                    return (
-                      <View key={nombre} style={styles.categoryRow}>
-                        <View style={styles.categoryInfo}>
-                          <Text style={styles.categoryNameText}>{nombre}</Text>
-                          <Text style={styles.categoryAmountText}>
-                            ${total.toLocaleString('es-AR')}
-                          </Text>
-                        </View>
+                      return (
+                        <View key={nombre} style={styles.categoryRow}>
+                          <View style={styles.categoryInfo}>
+                            <Text style={styles.categoryNameText}>
+                              {nombre}
+                            </Text>
+                            <Text style={styles.categoryAmountText}>
+                              ${total.toLocaleString('es-AR')}
+                            </Text>
+                          </View>
 
-                        <View style={styles.barBackground}>
-                          <View
-                            style={[
-                              styles.barFill,
-                              {
-                                width: `${porcentaje}%`,
-                                backgroundColor: colors.status.success,
-                              },
-                            ]}
-                          />
+                          <View style={styles.barBackground}>
+                            <View
+                              style={[
+                                styles.barFill,
+                                {
+                                  width: `${porcentaje}%`,
+                                  backgroundColor: colors.status.success,
+                                },
+                              ]}
+                            />
+                          </View>
                         </View>
-                      </View>
-                    )
-                  })}
+                      )
+                    })}
                 </View>
               </View>
             )}

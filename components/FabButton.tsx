@@ -13,9 +13,10 @@ export const FabButton = ({ onPress, icon = 'add' }: FabButtonProps) => {
 
   return (
     <Pressable
-      style={[
+      style={({ pressed }) => [
         styles.fabButton,
-        { bottom: 80 + insets.bottom / 2 }, // Ajuste para quedar arriba de las tabs (80px) + margen
+        { bottom: 80 + insets.bottom / 2 },
+        { opacity: pressed ? 0.7 : 1 },
       ]}
       onPress={onPress}
     >

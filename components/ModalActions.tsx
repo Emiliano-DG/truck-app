@@ -13,10 +13,22 @@ export default function ModalActions({
 }: ModalActionsProps) {
   return (
     <View style={styles.buttons}>
-      <Pressable style={styles.btnCancel} onPress={onClose}>
+      <Pressable
+        style={({ pressed }) => [
+          styles.btnCancel,
+          { opacity: pressed ? 0.7 : 1 },
+        ]}
+        onPress={onClose}
+      >
         <Text style={styles.textBtnCancel}>Cancelar</Text>
       </Pressable>
-      <Pressable style={styles.btnSave} onPress={handleSave}>
+      <Pressable
+        style={({ pressed }) => [
+          styles.btnSave,
+          { opacity: pressed ? 0.7 : 1 },
+        ]}
+        onPress={handleSave}
+      >
         <Text style={styles.textWhite}>Guardar</Text>
       </Pressable>
     </View>

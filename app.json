@@ -7,38 +7,42 @@
     "icon": "./assets/images/icon.png",
     "scheme": "truckapp",
     "userInterfaceStyle": "dark",
-    "newArchEnabled": true,
+    "backgroundColor": "#001F3F",
+    "splash": {
+      "image": "./assets/images/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#001F3F"
+    },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "backgroundColor": "#001F3F"
     },
     "android": {
-      "backgroundColor": "#162e50",
-      "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      "backgroundColor": "#001F3F",
+      "splash": {
+        "image": "./assets/images/icon.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#001F3F"
       },
-      "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false,
-      "navigationBar": {
-        "backgroundColor": "#162e50"
+      "adaptiveIcon": {
+        "backgroundColor": "#001F3F",
+        "foregroundImage": "./assets/images/icon.png"
       }
     },
     "web": {
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "output": "static"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
+          "image": "./assets/images/icon.png",
+          "imageWidth": 250,
           "resizeMode": "contain",
           "backgroundColor": "#001F3F",
           "dark": {
+            "image": "./assets/images/icon.png",
             "backgroundColor": "#001F3F"
           }
         }
@@ -47,7 +51,7 @@
         "expo-navigation-bar",
         {
           "position": "relative",
-          "backgroundColor": "#162e50"
+          "backgroundColor": "#001F3F"
         }
       ],
       "@react-native-community/datetimepicker"

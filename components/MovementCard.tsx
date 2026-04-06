@@ -50,7 +50,13 @@ export default function MovementCard({
 
         {/* Boton  para  eliminar el gasto */}
         {showOptions && onOptionsPress && (
-          <Pressable onPress={onOptionsPress} style={styles.optionsBtn}>
+          <Pressable
+            style={({ pressed }) => [
+              styles.optionsBtn,
+              { opacity: pressed ? 0.7 : 1 },
+            ]}
+            onPress={onOptionsPress}
+          >
             <Ionicons
               name="trash-outline"
               size={18}

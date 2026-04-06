@@ -46,8 +46,9 @@ export function useAddMovement() {
       return data[0] // Devuelve el movimiento recién creado
     },
     onSuccess: () => {
-      // Esto hace que la lista de movimientos se actualice automáticamente después de agregar uno nuevo
+      // Invalidar ambas queries: movimientos generales y movimientos de camiones
       queryClient.invalidateQueries({ queryKey: ['business-movements'] })
+      queryClient.invalidateQueries({ queryKey: ['truck-movements'] })
     },
   })
 }
@@ -63,8 +64,9 @@ export function useDeleteBusinessMovement() {
       if (error) throw error
     },
     onSuccess: () => {
-      // Al borrar con éxito, le avisamos a TanStack Query que refresque la lista
+      // Al borrar con éxito, invalidar ambas queries
       queryClient.invalidateQueries({ queryKey: ['business-movements'] })
+      queryClient.invalidateQueries({ queryKey: ['truck-movements'] })
     },
     onError: (error: any) => {
       Alert.alert(

@@ -105,7 +105,8 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)', // Negro semitransparente (podés usar colors.background.main + 'CC' si querés exacto)
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    paddingBottom: 20,
   },
   modalContent: {
     backgroundColor: colors.background.surface,

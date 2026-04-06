@@ -45,7 +45,7 @@ export default function emprendimiento() {
   }
 
   // Mostrar los primeros 20 movimientos
-  const recentMovements = movements.slice(0, 3)
+  const recentMovements = movements.slice(0, 20)
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
@@ -88,7 +88,7 @@ export default function emprendimiento() {
           <Text style={styles.emptyText}>No hay gastos registrados</Text>
         }
         ListFooterComponent={
-          movements.length > 3 ? (
+          movements.length > 20 ? (
             <Text style={styles.emptyText}>Ver más en el reporte..</Text>
           ) : null
         }

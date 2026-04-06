@@ -3,11 +3,19 @@ import { LoadingView } from '@/components/LoadingView'
 import MovementCard from '@/components/MovementCard'
 import { colors } from '@/constants/colors'
 import { AddMovementModal } from '@/features/trucks/components/AddMovementModal'
+import { useDeleteBusinessMovement } from '@/hooks/useMovement'
 import { useReadTrucks, useTrckMovements } from '@/hooks/useTrucks'
 import { calculateBalance } from '@/utils/finance'
 import { useLocalSearchParams } from 'expo-router'
 import React, { useState } from 'react'
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
+import {
+  Alert,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function DetailsTrucks() {
@@ -28,6 +36,26 @@ export default function DetailsTrucks() {
     isLoading: loadingMovements,
     isError: errorMovements,
   } = useTrckMovements(id)
+
+  // Hook para eliminar un movimiento de la base de datos
+  const { mutate: borrarEnSupabase } = useDeleteBusinessMovement()
+
+  const onOpenOptions = (item: any) => {
+    Alert.alert(
+      'Borrar movimiento',
+      `¿Estás seguro que quieres eliminar ${item.description} por $${item.amount.toLocaleString('es-AR')}?`,
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Eliminar',
+          style: 'destructive',
+          onPress: () => {
+            borrarEnSupabase(item.id) // Elimina de Supabase
+          },
+        },
+      ],
+    )
+  }
 
   //Chequeamos que este todo cargado
   if (loadingTrucks || loadingMovements) return <LoadingView />
@@ -100,6 +128,8 @@ export default function DetailsTrucks() {
             date={item.date}
             amount={item.amount}
             type={item.type}
+            showOptions={true}
+            onOptionsPress={() => onOpenOptions(item)}
           />
         )}
         contentContainerStyle={styles.list}
@@ -109,7 +139,13 @@ export default function DetailsTrucks() {
       />
 
       {/* Boton para agregar */}
-      <Pressable style={styles.addButton} onPress={() => setModalVisible(true)}>
+      <Pressable
+        style={({ pressed }) => [
+          styles.addButton,
+          { opacity: pressed ? 0.7 : 1 },
+        ]}
+        onPress={() => setModalVisible(true)}
+      >
         <Text style={styles.addButtonText}>Cargar Movimiento</Text>
       </Pressable>
       <AddMovementModal

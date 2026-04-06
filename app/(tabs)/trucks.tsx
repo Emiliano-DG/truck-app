@@ -22,7 +22,6 @@ export default function CamionesScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      {/* <Text style={styles.title}>Camiones 🚚</Text> */}
       <FlatList
         data={trucks}
         keyExtractor={(item) => item.id.toString()}
@@ -56,7 +55,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   listPadding: {
-    paddingTop: 20,
+    paddingTop: 50,
     paddingHorizontal: 20,
     paddingBottom: 110, // Para evitar que el último elemento quede bajo las pestañas
   },

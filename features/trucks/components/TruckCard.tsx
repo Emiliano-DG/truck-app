@@ -1,7 +1,7 @@
 import { colors } from '@/constants/colors'
 import { useDeleteTruck } from '@/hooks/useTrucks'
 import { Ionicons } from '@expo/vector-icons'
-import { Link } from 'expo-router'
+import { router } from 'expo-router'
 import React, { useRef } from 'react'
 import {
   Alert,
@@ -45,7 +45,13 @@ export default function TruckCard({ item }: { item: Truck }) {
     })
 
     return (
-      <Pressable onPress={handleDelete} style={styles.deleteContainer}>
+      <Pressable
+        style={({ pressed }) => [
+          styles.deleteContainer,
+          { opacity: pressed ? 0.7 : 1 },
+        ]}
+        onPress={handleDelete}
+      >
         <Animated.View
           style={[styles.deleteButton, { transform: [{ scale }] }]}
         >
@@ -62,24 +68,26 @@ export default function TruckCard({ item }: { item: Truck }) {
       overshootRight={false}
       friction={2}
     >
-      <Link href={{ pathname: '/truck/[id]', params: { id: item.id } }} asChild>
-        <Pressable style={styles.card}>
-          <View style={styles.leftContent}>
-            <Text style={styles.truckEmoji}>🚚</Text>
-            <View style={styles.infoContainer}>
-              <Text style={styles.modelText}>{item.model}</Text>
-              <Text style={styles.driverNameText}>{item.driverName}</Text>
-            </View>
+      <Pressable
+        style={({ pressed }) => [styles.card, { opacity: pressed ? 0.7 : 1 }]}
+        onPress={() =>
+          router.push({ pathname: '/truck/[id]', params: { id: item.id } })
+        }
+      >
+        <View style={styles.leftContent}>
+          <Text style={styles.truckEmoji}>🚚</Text>
+          <View style={styles.infoContainer}>
+            <Text style={styles.modelText}>{item.model}</Text>
+            <Text style={styles.driverNameText}>{item.driverName}</Text>
           </View>
+        </View>
 
-          {/* Indicador visual de que se puede entrar a ver mas */}
-          <Ionicons
-            name="chevron-forward"
-            size={20}
-            color={colors.primary.light}
-          />
-        </Pressable>
-      </Link>
+        <Ionicons
+          name="chevron-forward"
+          size={20}
+          color={colors.primary.light}
+        />
+      </Pressable>
     </Swipeable>
   )
 }
