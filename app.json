@@ -27,7 +27,8 @@
       "adaptiveIcon": {
         "backgroundColor": "#001F3F",
         "foregroundImage": "./assets/images/icon.png"
-      }
+      },
+      "package": "com.emidg.truckapp"
     },
     "web": {
       "output": "static"
@@ -59,6 +60,16 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "expo-navigation-bar": {
+        "position": "relative",
+        "backgroundColor": "#001F3F"
+      },
+      "eas": {
+        "projectId": "6a192ef7-85c4-48f4-b9ee-6048f3671caf"
+      }
     }
   }
 }

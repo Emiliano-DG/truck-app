@@ -28,7 +28,12 @@ export default function TruckCard({ item }: { item: Truck }) {
         {
           text: 'Eliminar',
           style: 'destructive',
-          onPress: () => deleteTruck(Number(item.id)),
+          onPress: () =>
+            deleteTruck(Number(item.id), {
+              onError: (error) => {
+                Alert.alert('Error', `No se pudo eliminar: ${error.message}`)
+              },
+            }),
         },
       ],
     )

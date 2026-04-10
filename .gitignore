@@ -5,6 +5,7 @@ node_modules/
 
 *.txt
 .env
+eas.json
 
 # Expo
 .expo/
