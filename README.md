@@ -32,15 +32,10 @@ Aplicación móvil construida con **React Native + Expo** para gestionar una flo
 
 ## � Capturas de Pantalla
 
-<img src="screenshots/captura1.jpeg" width="300" alt="Captura 1"/>
-
-<img src="screenshots/captura2.jpeg" width="300" alt="Captura 2"/>
-
-<img src="screenshots/captura3.jpeg" width="300" alt="Captura 3"/>
-
-<img src="screenshots/captura4.jpeg" width="300" alt="Captura 4"/>
-
-<img src="screenshots/captura5.jpeg" width="300" alt="Captura 5"/>
+|                                                                    |                                                                    |                                                                    |
+| :----------------------------------------------------------------: | :----------------------------------------------------------------: | :----------------------------------------------------------------: |
+| <img src="screenshots/captura1.jpeg" width="250" alt="Captura 1"/> | <img src="screenshots/captura2.jpeg" width="250" alt="Captura 2"/> | <img src="screenshots/captura3.jpeg" width="250" alt="Captura 3"/> |
+| <img src="screenshots/captura4.jpeg" width="250" alt="Captura 4"/> | <img src="screenshots/captura5.jpeg" width="250" alt="Captura 5"/> |                                                                    |
 
 ---
 
