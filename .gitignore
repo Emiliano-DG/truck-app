@@ -5,13 +5,14 @@ node_modules/
 
 *.txt
 .env
-eas.json
+
 
 # Expo
 .expo/
 dist/
 web-build/
 expo-env.d.ts
+eas.json
 
 # Native
 .kotlin/
