@@ -30,7 +30,21 @@ Aplicación móvil construida con **React Native + Expo** para gestionar una flo
 
 ---
 
-## 🛠️ Tech Stack
+## � Capturas de Pantalla
+
+![Captura 1](screenshots/captura1.jpeg)
+
+![Captura 2](screenshots/captura2.jpeg)
+
+![Captura 3](screenshots/captura3.jpeg)
+
+![Captura 4](screenshots/captura4.jpeg)
+
+![Captura 5](screenshots/captura5.jpeg)
+
+---
+
+## �🛠️ Tech Stack
 
 | Tecnología                       | Uso                                     |
 | -------------------------------- | --------------------------------------- |
